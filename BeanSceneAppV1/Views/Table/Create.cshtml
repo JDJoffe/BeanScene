@@ -1,0 +1,59 @@
+﻿@model BeanSceneAppV1.ViewModels.TableViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    
+
+}
+
+<h1>Create</h1>
+
+<h4>Table</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Table.Table_Id" class="control-label"></label>
+                <input asp-for="Table.Table_Id" class="form-control" />
+                <span asp-validation-for="Table.Table_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Table.Area" class="control-label"></label>
+                @*bruh*@
+                @*@Html.DropDownList("Area", Model.Table.Area, new SelectList(Model.Areas, "Area_Name"),
+                new {@class="form-control form-select"})*@
+              
+                 <Select asp-for="Table.Area" name="Area" class="form-control" >
+                     <option value="">Select an Area</option>
+                    @foreach (var item in Model.Areas)
+                    {
+                        <option value="@item">@item.Area_Name</option>
+                       
+                    }
+                    
+                </Select>   
+                <span asp-validation-for="Table.Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Table.Table_Seats" class="control-label"></label>
+                <input asp-for="Table.Table_Seats" class="form-control" />
+                <span asp-validation-for="Table.Table_Seats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
