@@ -15,17 +15,17 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Table.Table_Id" class="control-label"></label>
-                <input asp-for="Table.Table_Id" class="form-control" />
-                <span asp-validation-for="Table.Table_Id" class="text-danger"></span>
+                <label asp-for="Table.Table_Name" class="control-label"></label>
+                <input asp-for="Table.Table_Name" class="form-control" />
+                <span asp-validation-for="Table.Table_Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Table.Area" class="control-label"></label>
+                <label asp-for="Table.AreaId" class="control-label"></label>
                 @*bruh*@
-                @*@Html.DropDownList("Area", Model.Table.Area, new SelectList(Model.Areas, "Area_Name"),
-                new {@class="form-control form-select"})*@
+                @Html.DropDownListFor(model => model.Table.AreaId, new SelectList(Model.Areas, "Id", "Name"),
+                new {@class="form-control form-select"})
               
-                 <Select asp-for="Table.Area" name="Area" class="form-control" >
+                @* <Select asp-for="Table.Area_Id" name="Area" class="form-control" >
                      <option value="">Select an Area</option>
                     @foreach (var item in Model.Areas)
                     {
@@ -33,8 +33,8 @@
                        
                     }
                     
-                </Select>   
-                <span asp-validation-for="Table.Area" class="text-danger"></span>
+                </Select>  *@ 
+                @*<span asp-validation-for="Table.Area_Id" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Table.Table_Seats" class="control-label"></label>

@@ -11,10 +11,18 @@
     <h4>Area</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+
+            <th>@Html.DisplayNameFor(m => m.Name)</th>
+        </dt>
+        <dd class="col-sm-10">
+
+            <td>@Html.DisplayFor(mi => mi.Name)</td>
+        </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Area_Name" />
+        <input type="hidden" asp-for="Name" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

@@ -29,7 +29,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Table/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Table == null)
             {
@@ -38,7 +38,7 @@ namespace BeanSceneAppV1.Controllers
 
             var table = await _context.Table
                 .Include(t => t.Area)
-                .FirstOrDefaultAsync(m => m.Table_Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (table == null)
             {
                 return NotFound();
@@ -70,8 +70,10 @@ namespace BeanSceneAppV1.Controllers
         {
             var table = new Models.Table
             {
-                Table_Id = tableVM.Table.Table_Id,
-                Area= tableVM.Table.Area,
+                Id = tableVM.Table.Id,
+                Table_Name = tableVM.Table.Table_Name,
+                Area = tableVM.Table.Area,
+                AreaId = tableVM.Table.AreaId,
                 Table_Seats = tableVM.Table.Table_Seats
             };
             tableVM.Areas = _context.Area.ToList();
@@ -85,7 +87,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Table/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Table == null)
             {
@@ -150,7 +152,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Table/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Table == null)
             {
@@ -159,7 +161,7 @@ namespace BeanSceneAppV1.Controllers
 
             var table = await _context.Table
                 .Include(t => t.Area)
-                .FirstOrDefaultAsync(m => m.Table_Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (table == null)
             {
                 return NotFound();
@@ -177,7 +179,7 @@ namespace BeanSceneAppV1.Controllers
         // POST: Table/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Table == null)
             {
@@ -193,9 +195,9 @@ namespace BeanSceneAppV1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TableExists(string id)
+        private bool TableExists(int id)
         {
-          return _context.Table.Any(e => e.Table_Id == id);
+          return _context.Table.Any(e => e.Id == id);
         }
     }
 }

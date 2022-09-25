@@ -4,6 +4,7 @@ using BeanSceneAppV1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanSceneAppV1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220923004544_tafe")]
+    partial class tafe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,44 +101,31 @@ namespace BeanSceneAppV1.Data.Migrations
 
             modelBuilder.Entity("BeanSceneAppV1.Models.Area", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Area_Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.HasKey("Area_Name");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Area", (string)null);
+                    b.ToTable("Area");
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.Table", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Table_Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AreaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Table_Name")
+                    b.Property<string>("Area_Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Table_Seats")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Table_Id");
 
-                    b.HasIndex("AreaId");
+                    b.HasIndex("Area_Name");
 
-                    b.ToTable("Table", (string)null);
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -280,7 +269,7 @@ namespace BeanSceneAppV1.Data.Migrations
                 {
                     b.HasOne("BeanSceneAppV1.Models.Area", "Area")
                         .WithMany()
-                        .HasForeignKey("AreaId")
+                        .HasForeignKey("Area_Name")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

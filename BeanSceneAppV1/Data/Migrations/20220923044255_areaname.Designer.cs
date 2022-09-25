@@ -4,6 +4,7 @@ using BeanSceneAppV1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanSceneAppV1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220923044255_areaname")]
+    partial class areaname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +113,7 @@ namespace BeanSceneAppV1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Area", (string)null);
+                    b.ToTable("Area");
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.Table", b =>
@@ -125,6 +127,9 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.Property<int>("AreaId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Area_Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("Table_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -136,7 +141,7 @@ namespace BeanSceneAppV1.Data.Migrations
 
                     b.HasIndex("AreaId");
 
-                    b.ToTable("Table", (string)null);
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -22,11 +22,11 @@ namespace BeanSceneAppV1.Controllers
         // GET: Area
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Area.ToListAsync());
+            return View(await _context.Area.ToListAsync());
         }
 
         // GET: Area/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Area == null)
             {
@@ -34,7 +34,7 @@ namespace BeanSceneAppV1.Controllers
             }
 
             var area = await _context.Area
-                .FirstOrDefaultAsync(m => m.Area_Name == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (area == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Area_Name")] Area area)
+        public async Task<IActionResult> Create(Area area)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Area/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Area == null)
             {
@@ -86,13 +86,8 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Area_Name")] Area area)
+        public async Task<IActionResult> Edit(Area area)
         {
-            if (id != area.Area_Name)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -102,14 +97,9 @@ namespace BeanSceneAppV1.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AreaExists(area.Area_Name))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+
+                    return NotFound();
+
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -117,7 +107,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Area/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Area == null)
             {
@@ -125,7 +115,7 @@ namespace BeanSceneAppV1.Controllers
             }
 
             var area = await _context.Area
-                .FirstOrDefaultAsync(m => m.Area_Name == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (area == null)
             {
                 return NotFound();
@@ -137,7 +127,7 @@ namespace BeanSceneAppV1.Controllers
         // POST: Area/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Area == null)
             {
@@ -148,14 +138,14 @@ namespace BeanSceneAppV1.Controllers
             {
                 _context.Area.Remove(area);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AreaExists(string id)
+        private bool AreaExists(int id)
         {
-          return _context.Area.Any(e => e.Area_Name == id);
+            return _context.Area.Any(e => e.Id == id);
         }
     }
 }
