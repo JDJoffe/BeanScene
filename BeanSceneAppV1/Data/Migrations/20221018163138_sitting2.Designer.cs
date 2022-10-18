@@ -4,6 +4,7 @@ using BeanSceneAppV1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanSceneAppV1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221018163138_sitting2")]
+    partial class sitting2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,14 +178,14 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("date");
 
-                    b.Property<TimeSpan>("End_Time")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("End_Time")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SittingId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("Start_Time")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("Start_Time")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

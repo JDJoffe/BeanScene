@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.SqlTypes;
 
 namespace BeanSceneAppV1.Models
 {
@@ -7,18 +11,22 @@ namespace BeanSceneAppV1.Models
     {
         [Required]
         public int Id { get; set; }
-        [Required]
-        [DisplayName("Sitting Name")]
+        [Required]      
         public int SittingId { get; set; }
-        [Required]
+        [Required] 
+        [DisplayName("Sitting Name")]
+        [Column(TypeName = "varchar(9)")]
         public Sitting Sitting { get; set; }
         [Required]
-        public DateOnly Date { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Date { get; set; }
         [Required]
         [DisplayName("Start Time")]
-        public TimeOnly Start_Time { get; set; }
+        //[Column(TypeName = "time")]
+        public TimeSpan Start_Time { get; set; }
         [Required]
-        [DisplayName("Start Time")]
-        public TimeOnly End_Time { get; set; }
+        [DisplayName("End Time")]
+        //[Column(TypeName = "time")]
+        public TimeSpan End_Time { get; set; }
     }
 }

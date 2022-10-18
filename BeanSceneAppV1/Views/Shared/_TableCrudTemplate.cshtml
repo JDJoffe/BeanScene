@@ -1,0 +1,48 @@
+﻿@model BeanSceneAppV1.Models.CrudTemplate
+@using BeanSceneAppV1.Models;
+<td style="400px">
+    <div class="btn-group" role="group">
+        @Html.Partial("_CrudTemplate", new CrudTemplate{
+        Action = "Edit",
+        ButtonType = "btn-primary",
+        Glyph = "pencil",
+        Text = "Edit",
+        AreaId               =   Model.AreaId,
+        TableId              =   Model.TableId,
+        SittingId            =   Model.SittingId,
+        TimeSlotId           =   Model.TimeSlotId,
+        ReservationId        =   Model.ReservationId,
+        TableAvailabilityId  =   Model.TableAvailabilityId,
+        MemberId             =   Model.MemberId,
+        MemberShipTypeId     =   Model.MemberShipTypeId
+        })
+        @Html.Partial("_CrudTemplate", new CrudTemplate{
+        Action = "Details",
+        ButtonType = "btn-success",
+        Glyph = "list",
+        Text = "Details",
+        AreaId               =   Model.AreaId,
+        TableId              =   Model.TableId,
+        SittingId            =   Model.SittingId,
+        TimeSlotId           =   Model.TimeSlotId,
+        ReservationId        =   Model.ReservationId,
+        TableAvailabilityId  =   Model.TableAvailabilityId,
+        MemberId             =   Model.MemberId,
+        MemberShipTypeId     =   Model.MemberShipTypeId
+        })
+        @Html.Partial("_CrudTemplate", new CrudTemplate{
+        Action = "Delete",
+        ButtonType = "btn-danger",
+        Glyph = "trash",
+        Text = "Delete",
+        AreaId               =   Model.AreaId,
+        TableId              =   Model.TableId,
+        SittingId            =   Model.SittingId,
+        TimeSlotId           =   Model.TimeSlotId,
+        ReservationId        =   Model.ReservationId,
+        TableAvailabilityId  =   Model.TableAvailabilityId,
+        MemberId             =   Model.MemberId,
+        MemberShipTypeId     =   Model.MemberShipTypeId
+        })
+    </div>
+</td>
