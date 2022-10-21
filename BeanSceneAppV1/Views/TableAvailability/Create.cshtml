@@ -1,0 +1,52 @@
+﻿@using static BeanSceneAppV1.Models.TableAvailability
+@model BeanSceneAppV1.ViewModels.TableAvailabilityViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TableAvailability</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TableAvailability.TableId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.TableAvailability.TableId, new SelectList(Model.Tables, "Id", "Table_Name"),
+                new {@class="form-control form-selevct"})
+            </div>
+            <div class="form-group">
+                <label asp-for="TableAvailability.Date" class="control-label"></label>
+                <input asp-for="TableAvailability.Date" class="form-control" />
+                <span asp-validation-for="TableAvailability.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TableAvailability.TimeSlotId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.TableAvailability.TimeSlotId, new SelectList(Model.TimeSlots, "Id", "Time"),
+                new {@class="form-control form-select"})
+            </div>
+            <div class="form-group">
+                <label asp-for="TableAvailability.Status" class="control-label"></label>
+                <select asp-for="TableAvailability.Status" class="form-control"
+                        asp-items="Html.GetEnumSelectList<StatusEnum>()">
+
+                </select>
+                <span asp-validation-for="TableAvailability.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

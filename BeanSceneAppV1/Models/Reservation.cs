@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BeanSceneAppV1.Models
@@ -9,10 +10,16 @@ namespace BeanSceneAppV1.Models
         [Required]
         public int Id { get; set; }
         [Required]
-        public int TimeslotId { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; }
         [Required]
-        [DisplayName("Time")]
-        public TimeSlot TimeSlot { get; set; }      
+        public int TimeSlotId { get; set; }
+        [Required]
+        public TimeSlot TimeSlot { get; set; }
+        [Required]
+        public int SittingId { get; set; }
+        [Required]
+        public Sitting Sitting { get; set; }
         [Required]
         public int GuestAmmount { get; set; }         
         [Required]

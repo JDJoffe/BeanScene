@@ -12,13 +12,16 @@ namespace BeanSceneAppV1.Models
         [Required]
         public Area Area { get; set; }
         [Required]
-        public int TimeSlotId { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; }
         [Required]
-        public TimeSlot TimeSlot { get; set; }
+        [DisplayName("Start Time")]
+        [DataType(DataType.Time)]
+        public TimeSpan Start_Time { get; set; }
         [Required]
-        public int SittingId { get; set; }
-        [Required]
-        public Sitting Sitting { get; set; }
+        [DisplayName("End Time")]
+        [DataType(DataType.Time)]
+        public TimeSpan End_Time { get; set; }
         [Required]
         public StatusEnum Status { get; set; }
         

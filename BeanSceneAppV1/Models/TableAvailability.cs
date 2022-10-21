@@ -10,14 +10,14 @@ namespace BeanSceneAppV1.Models
         [Required]
         public int TableId { get; set; }
         [Required]
-        public Table Table { get; set; }
+        public Table Table { get; set; }      
+        [Required]
+        [DataType(DataType.Date)]    
+        public DateTime Date { get; set; }
+        [Required]
         public int TimeSlotId { get; set; }
         [Required]
         public TimeSlot TimeSlot { get; set; }
-        [Required]
-        public int SittingId { get; set; }
-        [Required]
-        public Sitting Sitting { get; set; }
         [Required]
         public StatusEnum Status { get; set; }
         public enum StatusEnum

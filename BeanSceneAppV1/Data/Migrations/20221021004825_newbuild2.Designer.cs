@@ -4,6 +4,7 @@ using BeanSceneAppV1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanSceneAppV1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221021004825_newbuild2")]
+    partial class newbuild2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,36 +116,6 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.ToTable("Area");
                 });
 
-            modelBuilder.Entity("BeanSceneAppV1.Models.AreaAvailability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AreaId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("End_Time")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("Start_Time")
-                        .HasColumnType("time");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
-
-                    b.ToTable("AreaAvailability");
-                });
-
             modelBuilder.Entity("BeanSceneAppV1.Models.Sitting", b =>
                 {
                     b.Property<int>("Id")
@@ -155,23 +127,11 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("End_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("End_Time")
-                        .HasColumnType("time");
-
                     b.Property<int>("Guest_Total")
                         .HasColumnType("int");
 
                     b.Property<int>("Sitting_Type")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("Start_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("Start_Time")
-                        .HasColumnType("time");
 
                     b.Property<int>("Tables_Available")
                         .HasColumnType("int");
@@ -206,38 +166,6 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.ToTable("Table");
                 });
 
-            modelBuilder.Entity("BeanSceneAppV1.Models.TableAvailability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeSlotId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TableId");
-
-                    b.HasIndex("TimeSlotId");
-
-                    b.HasIndex("Date", "TimeSlotId")
-                        .IsUnique();
-
-                    b.ToTable("TableAvailability");
-                });
-
             modelBuilder.Entity("BeanSceneAppV1.Models.TimeSlot", b =>
                 {
                     b.Property<int>("Id")
@@ -246,10 +174,21 @@ namespace BeanSceneAppV1.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<TimeSpan>("Time")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<TimeSpan>("End_Time")
+                        .HasColumnType("time");
+
+                    b.Property<int>("SittingId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Start_Time")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SittingId");
 
                     b.ToTable("TimeSlot");
                 });
@@ -391,17 +330,6 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BeanSceneAppV1.Models.AreaAvailability", b =>
-                {
-                    b.HasOne("BeanSceneAppV1.Models.Area", "Area")
-                        .WithMany()
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Area");
-                });
-
             modelBuilder.Entity("BeanSceneAppV1.Models.Table", b =>
                 {
                     b.HasOne("BeanSceneAppV1.Models.Area", "Area")
@@ -413,23 +341,15 @@ namespace BeanSceneAppV1.Data.Migrations
                     b.Navigation("Area");
                 });
 
-            modelBuilder.Entity("BeanSceneAppV1.Models.TableAvailability", b =>
+            modelBuilder.Entity("BeanSceneAppV1.Models.TimeSlot", b =>
                 {
-                    b.HasOne("BeanSceneAppV1.Models.Table", "Table")
+                    b.HasOne("BeanSceneAppV1.Models.Sitting", "Sitting")
                         .WithMany()
-                        .HasForeignKey("TableId")
+                        .HasForeignKey("SittingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BeanSceneAppV1.Models.TimeSlot", "TimeSlot")
-                        .WithMany()
-                        .HasForeignKey("TimeSlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Table");
-
-                    b.Navigation("TimeSlot");
+                    b.Navigation("Sitting");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
