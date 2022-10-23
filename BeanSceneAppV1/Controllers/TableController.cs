@@ -25,7 +25,7 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Table.Include(t => t.Area);
-              return View(await applicationDbContext.ToListAsync());
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Table/Details/5
@@ -55,7 +55,7 @@ namespace BeanSceneAppV1.Controllers
         public IActionResult Create()
         {
             var model = new TableViewModel()
-            {            
+            {
                 Areas = _context.Area.ToList()
             };
             return View(model);
@@ -79,9 +79,9 @@ namespace BeanSceneAppV1.Controllers
             tableVM.Areas = _context.Area.ToList();
             //if (ModelState.IsValid)
             //{
-                _context.Add(table);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            _context.Add(table);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
             //}
             return View(table);
         }
@@ -115,12 +115,20 @@ namespace BeanSceneAppV1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(TableViewModel tableVM)
         {
+            var table = new Models.Table
+            {
+                Id = tableVM.Table.Id,
+                Table_Name = tableVM.Table.Table_Name,
+                Area = tableVM.Table.Area,
+                AreaId = tableVM.Table.AreaId,
+                Table_Seats = tableVM.Table.Table_Seats
+            };
             //if (ModelState.IsValid)
             //{
-                tableVM.Areas = _context.Area.ToList();
-                _context.Update(tableVM.Table);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); 
+            tableVM.Areas = _context.Area.ToList();
+            _context.Update(table);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
             //}
 
             //if (id != table.Table_Id)
@@ -132,8 +140,8 @@ namespace BeanSceneAppV1.Controllers
             //{
             //    try
             //    {
-            //        _context.Update(table);
-            //        await _context.SaveChangesAsync();
+            //_context.Update(table);
+            //await _context.SaveChangesAsync();
             //    }
             //    catch (DbUpdateConcurrencyException)
             //    {
@@ -173,7 +181,7 @@ namespace BeanSceneAppV1.Controllers
                 Areas = _context.Area.ToList()
             };
             return View(model);
-            
+
         }
 
         // POST: Table/Delete/5
@@ -190,14 +198,14 @@ namespace BeanSceneAppV1.Controllers
             {
                 _context.Table.Remove(table);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TableExists(int id)
         {
-          return _context.Table.Any(e => e.Id == id);
+            return _context.Table.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model BeanSceneAppV1.Models.Table
+﻿@model BeanSceneAppV1.ViewModels.TableViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,11 +12,23 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Table_Name" />
+            <input type="hidden" asp-for="Table.Id" />
             <div class="form-group">
-                <label asp-for="Table_Seats" class="control-label"></label>
-                <input asp-for="Table_Seats" class="form-control" />
-                <span asp-validation-for="Table_Seats" class="text-danger"></span>
+                <label asp-for="Table.Table_Name" class="control-label"></label>
+                <input asp-for="Table.Table_Name" class="form-control" />
+                <span asp-validation-for="Table.Table_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Table.AreaId" class="control-label"></label>
+                @*bruh*@
+                @Html.DropDownListFor(model => model.Table.AreaId, new SelectList(Model.Areas, "Id", "Name"),
+                new {@class="form-control form-select"})
+                <span asp-validation-for="Table.AreaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Table.Table_Seats" class="control-label"></label>
+                <input asp-for="Table.Table_Seats" class="form-control" />
+                <span asp-validation-for="Table.Table_Seats" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -30,5 +42,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
