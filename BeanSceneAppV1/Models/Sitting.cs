@@ -37,9 +37,8 @@ namespace BeanSceneAppV1.Models
         [DisplayName("End Time")]
         [DataType(DataType.Time)]
         public TimeSpan End_Time { get; set; }
-        [Required]       
-        public int Capacity { get; set; }
         [Required]
+        public int Capacity { get; set; }
         [DisplayName("Total Guests")]
         public int Guest_Total { get; set; }
         [Required]

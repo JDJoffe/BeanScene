@@ -58,6 +58,7 @@ namespace BeanSceneAppV1.Controllers
         {
             if (ModelState.IsValid)
             {
+                sitting.Tables_Available = sitting.Capacity / 4;
                 _context.Add(sitting);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
