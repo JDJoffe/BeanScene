@@ -3,6 +3,45 @@
 @{
     ViewData["Title"] = "Index";
 
+    async Task collapsefunc(string area)
+    {
+
+        <div style="margin-bottom:10px">
+            <button type="button" class="collapsible btn btn-dark" style="width:100%">
+                @area Tables
+
+            </button>
+            <div class="content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Table_Name)</th>
+                            <th>@Html.DisplayNameFor(m => m.Area)</th>
+                            <th>@Html.DisplayNameFor(model => model.Table_Seats)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.Area.Name == area)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Table_Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Area.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Table_Seats)</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }
 
 <h1>Index</h1>
@@ -12,140 +51,39 @@
 </p>
 <div class="form-group" style="flex-direction:row">
 
-    <div style="margin-bottom:10px">
-        <button type="button" class="collapsible btn btn-dark" style="width:80%">
-            Main Tables
-        </button>
-        <div class="content">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@Html.DisplayNameFor(m => m.Table_Name)</th>
-                        <th>@Html.DisplayNameFor(m => m.Area)</th>
-                        <th>@Html.DisplayNameFor(model => model.Table_Seats)</th>
-                    </tr>
-                </thead>
+    @{
+        await collapsefunc("Main");
+    }
+    @{
+        await collapsefunc("Balcony");
+    }
+    @{
+        await collapsefunc("Outside");
+    }
 
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        if (item.Area.Name == "Main")
-                        {
-
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Table_Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Area.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Table_Seats)</td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-    <div style="margin-bottom:10px">
-        <button type="button" class="collapsible btn btn-dark" style="width:80%">
-            Balcony Tables
-        </button>
-        <div class="content">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@Html.DisplayNameFor(m => m.Table_Name)</th>
-                        <th>@Html.DisplayNameFor(m => m.Area)</th>
-                        <th>@Html.DisplayNameFor(model => model.Table_Seats)</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        if (item.Area.Name == "Balcony")
-                        {
-
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Table_Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Area.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Table_Seats)</td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-    <div style="margin-bottom:10px">
-        <button type="button" class="collapsible btn btn-dark" style="width:80%">
-            Outside Tables
-        </button>
-        <div class="content">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@Html.DisplayNameFor(m => m.Table_Name)</th>
-                        <th>@Html.DisplayNameFor(m => m.Area)</th>
-                        <th>@Html.DisplayNameFor(model => model.Table_Seats)</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        if (item.Area.Name == "Outside")
-                        {
-
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Table_Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Area.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Table_Seats)</td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>
 </div>
 <script>
     var coll = document.getElementsByClassName("collapsible");
+
     var i;
 
+
     for (i = 0; i < coll.length; i++) {
+
         coll[i].addEventListener("click", function () {
+
             this.classList.toggle("active");
             var content = this.nextElementSibling;
+
             if (content.style.display === "block") {
+
                 content.style.display = "none";
             } else {
                 content.style.display = "block";
+
             }
+
         });
     }
+
 </script>

@@ -14,6 +14,10 @@ namespace BeanSceneAppV1.Models
         [Required]
         [DataType(DataType.Date)]    
         public DateTime Date { get; set; }
+        //[Required] 
+        //public int SittingId { get; set; }
+        //[Required]
+        //public Sitting Sitting { get; set; }
         [Required]
         public int TimeSlotId { get; set; }
         [Required]

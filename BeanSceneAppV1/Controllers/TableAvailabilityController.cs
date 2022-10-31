@@ -85,8 +85,8 @@ namespace BeanSceneAppV1.Controllers
             //if (ModelState.IsValid)
             //{
             _context.Add(tableAvailability);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
             //}
             //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Table_Name", tableAvailability.TableId);
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", tableAvailability.TimeSlotId);
@@ -182,14 +182,14 @@ namespace BeanSceneAppV1.Controllers
             {
                 _context.TableAvailability.Remove(tableAvailability);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TableAvailabilityExists(int id)
         {
-          return _context.TableAvailability.Any(e => e.Id == id);
+            return _context.TableAvailability.Any(e => e.Id == id);
         }
     }
 }

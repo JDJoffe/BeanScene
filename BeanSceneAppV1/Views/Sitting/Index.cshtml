@@ -2,76 +2,90 @@
 
 @{
     ViewData["Title"] = "Index";
+
+
+    async Task collapsefunc(string sitting)
+    {
+        <div style="margin-bottom:10px">
+            <button type="button" class="collapsible btn btn-dark" style="width:100%">
+                @sitting
+            </button>
+            <div class="content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Sitting_Type)</th>
+                            <th>@Html.DisplayNameFor(model => model.Start_Date)</th>
+                            <th>@Html.DisplayNameFor(model => model.End_Date)</th>
+                            <th>@Html.DisplayNameFor(model => model.Start_Time)</th>
+                            <th>@Html.DisplayNameFor(model => model.End_Time)</th>
+                            <th>@Html.DisplayNameFor(model => model.Capacity)</th>
+                            <th>@Html.DisplayNameFor(model => model.Guest_Total)</th>
+                            <th>@Html.DisplayNameFor(model => model.Tables_Available)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.Sitting_Type.ToString() == sitting)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Sitting_Type)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Start_Date)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.End_Date)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Start_Time)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.End_Time)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Capacity)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Guest_Total)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Tables_Available)</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }
+
 
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Sitting_Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Start_Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.End_Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Start_Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.End_Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Guest_Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tables_Available)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sitting_Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start_Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End_Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guest_Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tables_Available)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="form-group" style="flex-direction:row">
+
+    @{
+        await collapsefunc("Breakfast");
+    }
+    @{
+        await collapsefunc("Lunch");
+    }
+    @{
+        await collapsefunc("Dinner");
+    }
+</div>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
