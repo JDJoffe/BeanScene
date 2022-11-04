@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BeanSceneAppV1.Data;
 using BeanSceneAppV1.Models;
 using BeanSceneAppV1.ViewModels;
-using BeanSceneAppV1.Data.Migrations;
+
 
 namespace BeanSceneAppV1.Controllers
 {

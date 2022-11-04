@@ -10,6 +10,8 @@ using BeanSceneAppV1.Models;
 using BeanSceneAppV1.ViewModels;
 using System.Data.SqlClient;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Globalization;
 
 namespace BeanSceneAppV1.Controllers
 {
@@ -69,10 +71,33 @@ namespace BeanSceneAppV1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ReservationViewModel reservationVM)
         {
-            //"Id,Date,TimeSlotId,SittingId,GuestAmmount,FirstName,LastName,
-            //Phone,Email,SeatingRequest,Status"
-            //SqlParameter[] objparams = new SqlParameter[2];
-            //SqlCommand comm = new SqlCommand();
+
+
+            SQLDAL _db;
+            _db = new SQLDAL();
+
+
+            string timeslotTime = "";
+            string sql = "SELECT [Time] FROM TIMESLOT t " +
+                $"WHERE '{reservationVM.Reservation.TimeSlotId}' = t.Id";
+            DataTable dt = _db.ExecuteSQL(sql);
+            foreach (DataRow dr in dt.Rows)
+            { timeslotTime = dr.ItemArray.First().ToString(); }
+
+
+            string sittingId = "";
+            string sql2 = "SELECT Id FROM SITTING s " +
+            $"WHERE ('{reservationVM.Reservation.Date}' BETWEEN s.Start_Date AND s.End_Date) AND " +
+            $" ('{timeslotTime}' BETWEEN s.Start_Time AND s.End_Time)";
+
+            string sql3 = "SELECT Id FROM Sitting";
+
+            DataTable dt2 = _db.ExecuteSQL(sql2);
+            foreach (DataRow dr2 in dt2.Rows)
+            { sittingId = dr2.ItemArray.First().ToString(); }
+
+            int.TryParse(sittingId, out int sittingIdnum);
+
             var reservation = new Models.Reservation
             {
                 Id = reservationVM.Reservation.Id,
@@ -80,7 +105,7 @@ namespace BeanSceneAppV1.Controllers
                 TimeSlot = reservationVM.Reservation.TimeSlot,
                 TimeSlotId = reservationVM.Reservation.TimeSlotId,
                 Sitting = reservationVM.Reservation.Sitting,
-                SittingId = reservationVM.Reservation.SittingId,
+                SittingId = sittingIdnum,
                 GuestAmmount = reservationVM.Reservation.GuestAmmount,
                 FirstName = reservationVM.Reservation.FirstName,
                 LastName = reservationVM.Reservation.LastName,
@@ -88,15 +113,15 @@ namespace BeanSceneAppV1.Controllers
                 Email = reservationVM.Reservation.Email,
                 SeatingRequest = reservationVM.Reservation.SeatingRequest,
                 Status = reservationVM.Reservation.Status
-                
+
             };
             reservationVM.Sittings = _context.Sitting.ToList();
             reservationVM.TimeSlots = _context.TimeSlot.ToList();
             //if (ModelState.IsValid)
             //{
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            _context.Add(reservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
             //}
             //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id", reservation.SittingId);
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", reservation.TimeSlotId);

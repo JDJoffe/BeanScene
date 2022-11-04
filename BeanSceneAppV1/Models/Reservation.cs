@@ -32,9 +32,9 @@ namespace BeanSceneAppV1.Models
         public string Phone { get; set; }
         [Required]
         public string Email { get; set; }
-        //[DisplayFormat(ConvertEmptyStringToNull =false)]
-        [DefaultValue("None")]
-        [DisplayFormat(ConvertEmptyStringToNull =false)]
+        [Required]
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        [DefaultValue(value: "Not Specified")]
         [DisplayName("Seating Request")]
         public string SeatingRequest { get; set; }
         [Required]

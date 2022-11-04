@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BeanSceneAppV1.Data.Migrations
+namespace BeanSceneAppV1.Migrations
 {
-    public partial class newbuild2 : Migration
+    public partial class newbuild4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,6 +70,10 @@ namespace BeanSceneAppV1.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Sitting_Type = table.Column<int>(type: "int", nullable: false),
+                    Start_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Start_Time = table.Column<TimeSpan>(type: "time", nullable: false),
+                    End_Time = table.Column<TimeSpan>(type: "time", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     Guest_Total = table.Column<int>(type: "int", nullable: false),
                     Tables_Available = table.Column<int>(type: "int", nullable: false)
@@ -77,6 +81,42 @@ namespace BeanSceneAppV1.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sitting", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeSlot",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Time = table.Column<TimeSpan>(type: "time", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeSlot", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AreaAvailability",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AreaId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Start_Time = table.Column<TimeSpan>(type: "time", nullable: false),
+                    End_Time = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AreaAvailability", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AreaAvailability_Area_AreaId",
+                        column: x => x.AreaId,
+                        principalTable: "Area",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,26 +247,71 @@ namespace BeanSceneAppV1.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeSlot",
+                name: "Reservation",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeSlotId = table.Column<int>(type: "int", nullable: false),
                     SittingId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "date", nullable: false),
-                    Start_Time = table.Column<TimeSpan>(type: "time", nullable: false),
-                    End_Time = table.Column<TimeSpan>(type: "time", nullable: false)
+                    GuestAmmount = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeatingRequest = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TimeSlot", x => x.Id);
+                    table.PrimaryKey("PK_Reservation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimeSlot_Sitting_SittingId",
+                        name: "FK_Reservation_Sitting_SittingId",
                         column: x => x.SittingId,
                         principalTable: "Sitting",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservation_TimeSlot_TimeSlotId",
+                        column: x => x.TimeSlotId,
+                        principalTable: "TimeSlot",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "TableAvailability",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TableId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeSlotId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TableAvailability", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TableAvailability_Table_TableId",
+                        column: x => x.TableId,
+                        principalTable: "Table",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TableAvailability_TimeSlot_TimeSlotId",
+                        column: x => x.TimeSlotId,
+                        principalTable: "TimeSlot",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AreaAvailability_AreaId",
+                table: "AreaAvailability",
+                column: "AreaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -268,18 +353,37 @@ namespace BeanSceneAppV1.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservation_SittingId",
+                table: "Reservation",
+                column: "SittingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservation_TimeSlotId",
+                table: "Reservation",
+                column: "TimeSlotId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Table_AreaId",
                 table: "Table",
                 column: "AreaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimeSlot_SittingId",
-                table: "TimeSlot",
-                column: "SittingId");
+                name: "IX_TableAvailability_TableId_Date_TimeSlotId",
+                table: "TableAvailability",
+                columns: new[] { "TableId", "Date", "TimeSlotId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableAvailability_TimeSlotId",
+                table: "TableAvailability",
+                column: "TimeSlotId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AreaAvailability");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -296,10 +400,10 @@ namespace BeanSceneAppV1.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Table");
+                name: "Reservation");
 
             migrationBuilder.DropTable(
-                name: "TimeSlot");
+                name: "TableAvailability");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -308,10 +412,16 @@ namespace BeanSceneAppV1.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Area");
+                name: "Sitting");
 
             migrationBuilder.DropTable(
-                name: "Sitting");
+                name: "Table");
+
+            migrationBuilder.DropTable(
+                name: "TimeSlot");
+
+            migrationBuilder.DropTable(
+                name: "Area");
         }
     }
 }
