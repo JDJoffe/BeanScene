@@ -9,9 +9,10 @@ using BeanSceneAppV1.Data;
 using BeanSceneAppV1.Models;
 using BeanSceneAppV1.ViewModels;
 using System.Data.SqlClient;
-using Microsoft.Data.SqlClient;
+//using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Globalization;
+//using SqlParameter = System.Data.SqlClient.SqlParameter;
 
 namespace BeanSceneAppV1.Controllers
 {
@@ -72,31 +73,20 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> Create(ReservationViewModel reservationVM)
         {
 
-
+            int sittingId = 0;
             SQLDAL _db;
             _db = new SQLDAL();
-
-
-            string timeslotTime = "";
-            string sql = "SELECT [Time] FROM TIMESLOT t " +
-                $"WHERE '{reservationVM.Reservation.TimeSlotId}' = t.Id";
-            DataTable dt = _db.ExecuteSQL(sql);
+            SqlParameter[] sqlparams =
+            {
+                new SqlParameter("@TimeSlotId",SqlDbType.Int){ Value = reservationVM.Reservation.TimeSlotId},
+                new SqlParameter("Date", SqlDbType.DateTime2){Value = reservationVM.Reservation.Date}
+            };
+            string sql = "USP_AssignSitting";
+            DataTable dt = _db.ExecuteSQL(sql, sqlparams, true);
             foreach (DataRow dr in dt.Rows)
-            { timeslotTime = dr.ItemArray.First().ToString(); }
+            { sittingId = (int)dr.ItemArray.First(); }
 
-
-            string sittingId = "";
-            string sql2 = "SELECT Id FROM SITTING s " +
-            $"WHERE ('{reservationVM.Reservation.Date}' BETWEEN s.Start_Date AND s.End_Date) AND " +
-            $" ('{timeslotTime}' BETWEEN s.Start_Time AND s.End_Time)";
-
-            string sql3 = "SELECT Id FROM Sitting";
-
-            DataTable dt2 = _db.ExecuteSQL(sql2);
-            foreach (DataRow dr2 in dt2.Rows)
-            { sittingId = dr2.ItemArray.First().ToString(); }
-
-            int.TryParse(sittingId, out int sittingIdnum);
+            //int.TryParse(sittingId, out int sittingIdnum);
 
             var reservation = new Models.Reservation
             {
@@ -105,7 +95,7 @@ namespace BeanSceneAppV1.Controllers
                 TimeSlot = reservationVM.Reservation.TimeSlot,
                 TimeSlotId = reservationVM.Reservation.TimeSlotId,
                 Sitting = reservationVM.Reservation.Sitting,
-                SittingId = sittingIdnum,
+                SittingId = sittingId,
                 GuestAmmount = reservationVM.Reservation.GuestAmmount,
                 FirstName = reservationVM.Reservation.FirstName,
                 LastName = reservationVM.Reservation.LastName,
