@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 //using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 //using SqlParameter = System.Data.SqlClient.SqlParameter;
 
 namespace BeanSceneAppV1.Controllers
@@ -52,6 +53,7 @@ namespace BeanSceneAppV1.Controllers
             return View(reservation);
         }
 
+        [AllowAnonymous]
         // GET: Reservation/Create
         public IActionResult Create()
         {
@@ -70,6 +72,7 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Create(ReservationViewModel reservationVM)
         {
 
@@ -119,6 +122,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Reservation/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reservation == null)
@@ -144,6 +148,7 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(ReservationViewModel reservationVM)
         {
             var reservation = new Models.Reservation
@@ -198,6 +203,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Reservation/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Reservation == null)
