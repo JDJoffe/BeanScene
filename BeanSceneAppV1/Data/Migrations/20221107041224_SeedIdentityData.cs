@@ -29,7 +29,7 @@ namespace BeanSceneAppV1.Migrations
             string roleMemberId = "86fa9752-0fba-4a40-bc94-fdce825eb417";
             string roleStaffId = "bd5300a0-47f6-48c3-8cf1-f44265ec13fb";
             string roleManagerId = "0c696da5-1792-4243-8310-70a50a86830b";
-            string user1 = "0c696da5-1792-4243-8310-70a50a86830b";
+            string user1 = "4aad9167-fe03-4100-ba60-01246bd96745";
             string user2 = "a8b2fc99-3400-4e20-a722-4147bb670dca";
             string user3 = "eab9b0af-8098-4777-a67e-6e3ff5afe005";
             // Add roles to the AspNetRoles table
@@ -40,14 +40,14 @@ namespace BeanSceneAppV1.Migrations
             // Add users to the AspNetUsers table and assign roles
                     
             // Manager
-            CreateUser("0c696da5-1792-4243-8310-70a50a86830b", "BarryBeanScene", "Barry123", "Barry@BeanScene.com", null, "Barry", "Bayman"
+            CreateUser(user1, "BarryBeanScene", "Barry123", "Barry@BeanScene.com", null, "Barry", "Bayman"
                , new string[] { roleStaffId, roleManagerId });
            
             // Staff
-            CreateUser("a8b2fc99-3400-4e20-a722-4147bb670dca", "MitchBeanScene", "Mitch123", "Mitch@BeanScene.com", null, "Mitch", "Michaels"
+            CreateUser(user2, "MitchBeanScene", "Mitch123", "Mitch@BeanScene.com", null, "Mitch", "Michaels"
                 , new string[] { roleStaffId }); 
             // Member
-            CreateUser("eab9b0af-8098-4777-a67e-6e3ff5afe005", "MemberGary", "Garfaulk", "GaryFaulkner@Gmail.com", "04100", "Gary", "Faulkner"
+            CreateUser(user3, "MemberGary", "Garfaulk", "GaryFaulkner@Gmail.com", "04100", "Gary", "Faulkner"
                , new string[] { roleMemberId }); 
            
         }
@@ -64,7 +64,7 @@ namespace BeanSceneAppV1.Migrations
             string roleMemberId = "86fa9752-0fba-4a40-bc94-fdce825eb417";
             string roleStaffId = "bd5300a0-47f6-48c3-8cf1-f44265ec13fb";
             string roleManagerId = "0c696da5-1792-4243-8310-70a50a86830b";
-            string user1 = "0c696da5-1792-4243-8310-70a50a86830b";
+            string user1 = "4aad9167-fe03-4100-ba60-01246bd96745";
             string user2 = "a8b2fc99-3400-4e20-a722-4147bb670dca";
             string user3 = "eab9b0af-8098-4777-a67e-6e3ff5afe005";
             // Delete roles from the AspNetRoles table
