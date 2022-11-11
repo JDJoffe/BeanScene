@@ -9,9 +9,12 @@ using BeanSceneAppV1.Data;
 using BeanSceneAppV1.Models;
 using BeanSceneAppV1.ViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace BeanSceneAppV1.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class AreaAvailabilityController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BeanSceneAppV1.Data;
 using BeanSceneAppV1.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace BeanSceneAppV1.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class AreaController : Controller
     {
         private readonly ApplicationDbContext _context;

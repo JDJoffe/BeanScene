@@ -1,4 +1,7 @@
-﻿using BeanSceneAppV1.Models;
+﻿using BeanSceneAppV1.Data;
+using BeanSceneAppV1.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -16,8 +19,9 @@ namespace BeanSceneAppV1.Controllers
         public IActionResult Index()
         {
             return View();
+          
         }
-
+        [Authorize(Roles = "Manager")]
         public IActionResult Privacy()
         {
             return View();

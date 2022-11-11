@@ -25,14 +25,14 @@ namespace BeanSceneAppV1.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Manager")]
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Reservation.Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize(Roles = "Manager")]
         // GET: Reservation/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -122,7 +122,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Reservation/Edit/5
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reservation == null)
@@ -148,7 +148,7 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(ReservationViewModel reservationVM)
         {
             var reservation = new Models.Reservation
@@ -203,7 +203,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: Reservation/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Reservation == null)
@@ -226,6 +226,7 @@ namespace BeanSceneAppV1.Controllers
         // POST: Reservation/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Reservation == null)

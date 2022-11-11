@@ -124,6 +124,8 @@ namespace BeanSceneAppV1.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                user.First_Name = Input.First_Name;
+                user.Last_Name = Input.Last_Name;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -131,6 +133,15 @@ namespace BeanSceneAppV1.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+
+                    var defaultrole = await _roleManager.FindByNameAsync(_defaultUserRole);
+                    if (defaultrole != null)
+                    {
+                        _ = await _userManager.AddToRoleAsync(user, defaultrole.Name);
+                        _logger.LogInformation($"Role '{defaultrole.Name}' was assigned to new user account");
+                    }
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

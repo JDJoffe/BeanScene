@@ -2,6 +2,8 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+
+   
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -10,12 +12,23 @@
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
+            <h3>Your Email will be your User name.</h3>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Email"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.First_Name" class="form-control" autocomplete="firstname" aria-required="true" />
+                <label asp-for="Input.First_Name">Firstname</label>
+                <span asp-validation-for="Input.First_Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.Last_Name" class="form-control" autocomplete="lastname" aria-required="true" />
+                <label asp-for="Input.Last_Name">Lastname</label>
+                <span asp-validation-for="Input.Last_Name" class="text-danger"></span>
             </div>
             <div class="form-floating">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
@@ -64,4 +77,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    
 }

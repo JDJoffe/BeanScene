@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using BeanSceneAppV1.Data;
 using BeanSceneAppV1.Models;
 using BeanSceneAppV1.ViewModels;
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace BeanSceneAppV1.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class TableAvailabilityController : Controller
     {
         private readonly ApplicationDbContext _context;

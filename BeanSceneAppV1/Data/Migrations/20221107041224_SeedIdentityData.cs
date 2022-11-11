@@ -40,14 +40,14 @@ namespace BeanSceneAppV1.Migrations
             // Add users to the AspNetUsers table and assign roles
                     
             // Manager
-            CreateUser(user1, "BarryBeanScene", "Barry123", "Barry@BeanScene.com", null, "Barry", "Bayman"
+            CreateUser(user1, "Barry1@BeanScene.com", "Barry1@BeanScene.com", "Barry1@BeanScene.com", null, "Barry", "Bayman"
                , new string[] { roleStaffId, roleManagerId });
            
             // Staff
-            CreateUser(user2, "MitchBeanScene", "Mitch123", "Mitch@BeanScene.com", null, "Mitch", "Michaels"
+            CreateUser(user2, "Mitch1@BeanScene.com", "Mitch1@BeanScene.com", "Mitch1@BeanScene.com", null, "Mitch", "Michaels"
                 , new string[] { roleStaffId }); 
             // Member
-            CreateUser(user3, "MemberGary", "Garfaulk", "GaryFaulkner@Gmail.com", "04100", "Gary", "Faulkner"
+            CreateUser(user3, "GaryFaulkner1@Gmail.com", "GaryFaulkner1@Gmail.com", "GaryFaulkner1@Gmail.com", "04100", "Gary", "Faulkner"
                , new string[] { roleMemberId }); 
            
         }
