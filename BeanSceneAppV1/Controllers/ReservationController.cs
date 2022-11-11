@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 //using SqlParameter = System.Data.SqlClient.SqlParameter;
 
 namespace BeanSceneAppV1.Controllers
@@ -20,19 +21,33 @@ namespace BeanSceneAppV1.Controllers
     public class ReservationController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationController(ApplicationDbContext context)
+        public ReservationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+            
         }
         [Authorize(Roles = "Manager")]
+ 
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Reservation.Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager, Staff, Member")]
+
+        // GET: Reservation
+        public async Task<IActionResult> IndexMember()
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+
+            var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            return View(await applicationDbContext.ToListAsync());
+        }
+        [Authorize(Roles = "Manager, Staff, Member")]
         // GET: Reservation/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -88,7 +103,7 @@ namespace BeanSceneAppV1.Controllers
             DataTable dt = _db.ExecuteSQL(sql, sqlparams, true);
             foreach (DataRow dr in dt.Rows)
             { sittingId = (int)dr.ItemArray.First(); }
-
+           
             //int.TryParse(sittingId, out int sittingIdnum);
 
             var reservation = new Models.Reservation
@@ -105,7 +120,7 @@ namespace BeanSceneAppV1.Controllers
                 Phone = reservationVM.Reservation.Phone,
                 Email = reservationVM.Reservation.Email,
                 SeatingRequest = reservationVM.Reservation.SeatingRequest,
-                Status = reservationVM.Reservation.Status
+                Status = Reservation.StatusEnum.Requested
 
             };
             reservationVM.Sittings = _context.Sitting.ToList();
