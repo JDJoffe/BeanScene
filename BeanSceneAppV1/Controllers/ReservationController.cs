@@ -288,5 +288,20 @@ namespace BeanSceneAppV1.Controllers
             return View();
            
         }
+        [Authorize(Roles = "Manager, Staff")]
+        public async Task<IActionResult> Reject(int? id)
+        {
+            var reservation = await _context.Reservation.FindAsync(id);
+
+            reservation.Status = Reservation.StatusEnum.Rejected;
+
+            _context.Reservation.Update(reservation);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index3");
+
+            return View();
+
+        }
     }
 }
