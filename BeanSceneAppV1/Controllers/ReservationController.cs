@@ -22,15 +22,16 @@ namespace BeanSceneAppV1.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationUser> _roleManager;
 
         public ReservationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            
+
         }
         [Authorize(Roles = "Manager")]
- 
+
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
@@ -43,7 +44,7 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> IndexMember()
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
-
+           
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -53,7 +54,7 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> IndexStaff()
         {
             // ApplicationUser user = await _userManager.GetUserAsync(User);
-            
+
             var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Requested && r.Date.Date >= DateTime.Today && r.TimeSlot.Time.Hours >= TimeOnly.FromDateTime(DateTime.Now).Hour).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -113,7 +114,7 @@ namespace BeanSceneAppV1.Controllers
             DataTable dt = _db.ExecuteSQL(sql, sqlparams, true);
             foreach (DataRow dr in dt.Rows)
             { sittingId = (int)dr.ItemArray.First(); }
-           
+
             //int.TryParse(sittingId, out int sittingIdnum);
 
             var reservation = new Models.Reservation
@@ -138,8 +139,25 @@ namespace BeanSceneAppV1.Controllers
             //if (ModelState.IsValid)
             //{
             _context.Add(reservation);
-            await _context.SaveChangesAsync();          
-            return RedirectToAction(nameof(Index));
+            await _context.SaveChangesAsync();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            List<string> usrRoles = new List<string>();
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var item in roles)
+            {
+                usrRoles.Add(item.ToString());
+            }
+                                        
+            if (usrRoles.Contains("Manager"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if(usrRoles.Contains("Staff"))
+            {
+                return RedirectToAction(nameof(IndexMember));
+            }
+            else { return RedirectToAction(nameof(Create)); }
+
             //}
             //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id", reservation.SittingId);
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", reservation.TimeSlotId);
@@ -275,18 +293,18 @@ namespace BeanSceneAppV1.Controllers
 
         [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> Accept(int? id)
-        { 
+        {
             var reservation = await _context.Reservation.FindAsync(id);
-             
-                reservation.Status =  Reservation.StatusEnum.Accepted;
 
-                _context.Reservation.Update(reservation);
+            reservation.Status = Reservation.StatusEnum.Accepted;
 
-                _context.SaveChanges();
-                return RedirectToAction("Index3");
-            
+            _context.Reservation.Update(reservation);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index3");
+
             return View();
-           
+
         }
         [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> Reject(int? id)
