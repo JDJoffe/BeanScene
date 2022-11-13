@@ -44,7 +44,7 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> IndexMember()
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
-           
+
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -141,20 +141,23 @@ namespace BeanSceneAppV1.Controllers
             _context.Add(reservation);
             await _context.SaveChangesAsync();
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            List<string> usrRoles = new List<string>();
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var item in roles)
+            if (user != null)
             {
-                usrRoles.Add(item.ToString());
-            }
-                                        
-            if (usrRoles.Contains("Manager"))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if(usrRoles.Contains("Staff"))
-            {
-                return RedirectToAction(nameof(IndexMember));
+                List<string> usrRoles = new List<string>();
+                var roles = await _userManager.GetRolesAsync(user);
+                foreach (var item in roles)
+                {
+                    usrRoles.Add(item.ToString());
+                }
+
+                if (usrRoles.Contains("Manager"))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else if (usrRoles.Contains("Staff"))
+                {
+                    return RedirectToAction(nameof(IndexMember));
+                }
             }
             else { return RedirectToAction(nameof(Create)); }
 
