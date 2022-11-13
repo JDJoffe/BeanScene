@@ -3,15 +3,13 @@
 @model IEnumerable<BeanSceneAppV1.Models.Reservation>
 
 @{
-    ViewData["Title"] = "Index2";
-
+    ViewData["Title"] = "Index3";
+    bool status;
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -44,13 +42,13 @@
                 <td>@Html.DisplayFor(modelItem => item.SeatingRequest)</td>
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete"  asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-primary btn-sm"  asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 </td>
+                <td> <a class="btn btn-success btn-sm" asp-action="Accept" asp-route-id="@item.Id">Accept</a></td>
+                <td> <a class="btn btn-danger btn-sm" asp-action="Reject" asp-route-id="@item.Id">Reject</a></td>
             </tr>
-
-
+           
+        
         }
     </tbody>
 </table>

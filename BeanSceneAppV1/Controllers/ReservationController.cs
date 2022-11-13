@@ -47,6 +47,16 @@ namespace BeanSceneAppV1.Controllers
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
+        [Authorize(Roles = "Manager, Staff")]
+
+        // GET: Reservation
+        public async Task<IActionResult> IndexStaff()
+        {
+            // ApplicationUser user = await _userManager.GetUserAsync(User);
+            
+            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Requested && r.Date.Date >= DateTime.Today && r.TimeSlot.Time.Hours >= TimeOnly.FromDateTime(DateTime.Now).Hour).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            return View(await applicationDbContext.ToListAsync());
+        }
         [Authorize(Roles = "Manager, Staff, Member")]
         // GET: Reservation/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -128,7 +138,7 @@ namespace BeanSceneAppV1.Controllers
             //if (ModelState.IsValid)
             //{
             _context.Add(reservation);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();          
             return RedirectToAction(nameof(Index));
             //}
             //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id", reservation.SittingId);
@@ -261,6 +271,22 @@ namespace BeanSceneAppV1.Controllers
         private bool ReservationExists(int id)
         {
             return _context.Reservation.Any(e => e.Id == id);
+        }
+
+        [Authorize(Roles = "Manager, Staff")]
+        public async Task<IActionResult> Accept(int? id)
+        { 
+            var reservation = await _context.Reservation.FindAsync(id);
+             
+                reservation.Status =  Reservation.StatusEnum.Accepted;
+
+                _context.Reservation.Update(reservation);
+
+                _context.SaveChanges();
+                return RedirectToAction("Index3");
+            
+            return View();
+           
         }
     }
 }
