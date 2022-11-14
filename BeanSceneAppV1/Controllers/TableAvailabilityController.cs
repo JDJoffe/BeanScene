@@ -27,7 +27,10 @@ namespace BeanSceneAppV1.Controllers
         // GET: TableAvailability
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.TableAvailability.Include(t => t.Table).Include(t => t.TimeSlot);
+            var applicationDbContext = _context.TableAvailability
+                //.Where(t => t.ta)
+                .Include(t => t.Table)
+                .Include(t => t.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
 

@@ -41,6 +41,7 @@ namespace BeanSceneAppV1.Data
             }
           
         }
+        public DbSet<BeanSceneAppV1.Models.TableAvailabilityReservation> TableReservation { get; set; }
         
     }
 

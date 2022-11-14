@@ -10,7 +10,7 @@ namespace BeanSceneAppV1.Models
         [Required]
         public int TableId { get; set; }
         [Required]
-        public Table Table { get; set; }      
+        public Table Table { get; set; }       
         [Required]
         [DataType(DataType.Date)]    
         public DateTime Date { get; set; }

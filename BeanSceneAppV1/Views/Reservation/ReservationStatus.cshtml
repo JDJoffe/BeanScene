@@ -3,7 +3,7 @@
 @model IEnumerable<BeanSceneAppV1.Models.Reservation>
 
 @{
-    ViewData["Title"] = "Index3";
+    ViewData["Title"] = "ReservationStatus";
 }
 
 <h1>Index</h1>
@@ -38,7 +38,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.SeatingRequest)</td>
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                <td><a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a></td>
+               @* <td><a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a></td>*@
                 <td><a class="btn btn-success btn-sm" asp-action="Accept" asp-route-id="@item.Id">Accept</a></td>
                 <td><a class="btn btn-danger btn-sm" asp-action="Reject" asp-route-id="@item.Id">Reject</a></td>
             </tr>

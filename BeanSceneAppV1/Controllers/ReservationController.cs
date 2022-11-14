@@ -51,7 +51,7 @@ namespace BeanSceneAppV1.Controllers
         [Authorize(Roles = "Manager, Staff")]
 
         // GET: Reservation
-        public async Task<IActionResult> IndexStaff()
+        public async Task<IActionResult> ReservationStatus()
         {
             // ApplicationUser user = await _userManager.GetUserAsync(User);
 
