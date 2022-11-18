@@ -105,8 +105,7 @@ namespace BeanSceneAppV1.Migrations
                     AreaId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Start_Time = table.Column<TimeSpan>(type: "time", nullable: false),
-                    End_Time = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    End_Time = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,8 +287,7 @@ namespace BeanSceneAppV1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TableId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeSlotId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    TimeSlotId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

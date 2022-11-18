@@ -15,7 +15,7 @@ namespace BeanSceneAppV1.Data
         public DbSet<AreaAvailability> AreaAvailability { get; set; }
         public DbSet<TableAvailability> TableAvailability { get; set; }
         public DbSet<BeanSceneAppV1.Models.Reservation> Reservation { get; set; }
-
+        public DbSet<BeanSceneAppV1.Models.TableReservation> TableReservation { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -24,7 +24,7 @@ namespace BeanSceneAppV1.Data
         {
             // do this for reservations  and timeslots based on cros foot v2
             //builder.Entity<Area>(e => e.Property(e => e.Area_Name).HasColumnName("Area_Name"));
-            builder.Entity<TableAvailability>().HasIndex(t => new {t.TableId, t.Date, t.TimeSlotId }).IsUnique();
+            builder.Entity<TableAvailability>().HasIndex(t => new { t.TableId, t.Date, t.TimeSlotId }).IsUnique();
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
 
@@ -37,12 +37,12 @@ namespace BeanSceneAppV1.Data
             {
                 builder.Property(u => u.First_Name).HasMaxLength(255);
                 builder.Property(u => u.Last_Name).HasMaxLength(255);
-               
+
             }
-          
+
         }
-        public DbSet<BeanSceneAppV1.Models.TableAvailabilityReservation> TableReservation { get; set; }
-        
+
+
     }
 
 }

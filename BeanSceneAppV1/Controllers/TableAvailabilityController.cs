@@ -82,8 +82,7 @@ namespace BeanSceneAppV1.Controllers
                 TableId = tableAvailabilityVM.TableAvailability.TableId,
                 Table = tableAvailabilityVM.TableAvailability.Table,
                 TimeSlotId = tableAvailabilityVM.TableAvailability.TimeSlotId,
-                TimeSlot = tableAvailabilityVM.TableAvailability.TimeSlot,
-                Status = tableAvailabilityVM.TableAvailability.Status
+                TimeSlot = tableAvailabilityVM.TableAvailability.TimeSlot
 
             };
             tableAvailabilityVM.Tables = _context.Table.ToList();
@@ -122,7 +121,7 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TableId,Date,TimeSlotId,Status")] TableAvailability tableAvailability)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TableId,Date,TimeSlotId")] TableAvailability tableAvailability)
         {
             if (id != tableAvailability.Id)
             {

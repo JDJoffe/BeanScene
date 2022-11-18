@@ -22,12 +22,6 @@ namespace BeanSceneAppV1.Models
         public int TimeSlotId { get; set; }
         [Required]
         public TimeSlot TimeSlot { get; set; }
-        [Required]
-        public StatusEnum Status { get; set; }
-        public enum StatusEnum
-        {
-            Available,
-            NA
-        }
+      
     }
 }

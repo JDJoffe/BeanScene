@@ -21,6 +21,7 @@ namespace BeanSceneAppV1.Models
         [Required]
         public Sitting Sitting { get; set; }
         [Required]
+        [DisplayName("Guest Ammount")]
         public int GuestAmmount { get; set; }         
         [Required]
         [DisplayName("First Name")]

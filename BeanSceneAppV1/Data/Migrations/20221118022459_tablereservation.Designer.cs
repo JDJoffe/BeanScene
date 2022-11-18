@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanSceneAppV1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221114012234_tableavailabilityreservation")]
-    partial class tableavailabilityreservation
+    [Migration("20221118022459_tablereservation")]
+    partial class tablereservation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,9 +135,6 @@ namespace BeanSceneAppV1.Migrations
 
                     b.Property<TimeSpan>("Start_Time")
                         .HasColumnType("time");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -271,9 +268,6 @@ namespace BeanSceneAppV1.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<int>("TableId")
                         .HasColumnType("int");
 
@@ -290,7 +284,7 @@ namespace BeanSceneAppV1.Migrations
                     b.ToTable("TableAvailability");
                 });
 
-            modelBuilder.Entity("BeanSceneAppV1.Models.TableAvailabilityReservation", b =>
+            modelBuilder.Entity("BeanSceneAppV1.Models.TableReservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -301,14 +295,14 @@ namespace BeanSceneAppV1.Migrations
                     b.Property<int>("ReservationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TableAvailabilityId")
+                    b.Property<int>("TableId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ReservationId");
 
-                    b.HasIndex("TableAvailabilityId");
+                    b.HasIndex("TableId");
 
                     b.ToTable("TableReservation");
                 });
@@ -526,7 +520,7 @@ namespace BeanSceneAppV1.Migrations
                     b.Navigation("TimeSlot");
                 });
 
-            modelBuilder.Entity("BeanSceneAppV1.Models.TableAvailabilityReservation", b =>
+            modelBuilder.Entity("BeanSceneAppV1.Models.TableReservation", b =>
                 {
                     b.HasOne("BeanSceneAppV1.Models.Reservation", "Reservation")
                         .WithMany()
@@ -534,15 +528,15 @@ namespace BeanSceneAppV1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BeanSceneAppV1.Models.TableAvailability", "TableAvailability")
+                    b.HasOne("BeanSceneAppV1.Models.Table", "Table")
                         .WithMany()
-                        .HasForeignKey("TableAvailabilityId")
+                        .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Reservation");
 
-                    b.Navigation("TableAvailability");
+                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

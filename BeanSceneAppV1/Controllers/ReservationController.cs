@@ -30,12 +30,36 @@ namespace BeanSceneAppV1.Controllers
             _userManager = userManager;
 
         }
-        [Authorize(Roles = "Manager")]
+        [AllowAnonymous]
 
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Reservation.Include(r => r.Sitting).Include(r => r.TimeSlot);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                List<string> usrRoles = new List<string>();
+                var roles = await _userManager.GetRolesAsync(user);
+                foreach (var item in roles)
+                {
+                    usrRoles.Add(item.ToString());
+                }
+
+
+                if (usrRoles.Contains("Manager"))
+                {
+                    return View(await applicationDbContext.ToListAsync());
+                    //return RedirectToAction(nameof(Index));
+                }
+                else if (usrRoles.Contains("Staff") || usrRoles.Contains("Member"))
+                {
+                    return RedirectToAction(nameof(IndexMember));
+                    
+                }
+            }
+            else { return RedirectToAction(nameof(Create)); }
+
             return View(await applicationDbContext.ToListAsync());
         }
         [Authorize(Roles = "Manager, Staff, Member")]
@@ -44,7 +68,7 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> IndexMember()
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
-
+            
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -54,10 +78,9 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> ReservationStatus()
         {
             // ApplicationUser user = await _userManager.GetUserAsync(User);
-
-            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Requested && r.Date.Date >= DateTime.Today && r.TimeSlot.Time.Hours >= TimeOnly.FromDateTime(DateTime.Now).Hour).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay && r.Sitting.Capacity - r.GuestAmmount >=0).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
-        }
+        }     
         [Authorize(Roles = "Manager, Staff, Member")]
         // GET: Reservation/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -154,7 +177,7 @@ namespace BeanSceneAppV1.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
-                else if (usrRoles.Contains("Staff"))
+                else if (usrRoles.Contains("Staff") || usrRoles.Contains("Member"))
                 {
                     return RedirectToAction(nameof(IndexMember));
                 }
@@ -293,18 +316,22 @@ namespace BeanSceneAppV1.Controllers
         {
             return _context.Reservation.Any(e => e.Id == id);
         }
+ 
 
         [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> Accept(int? id)
         {
             var reservation = await _context.Reservation.FindAsync(id);
+            var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
 
             reservation.Status = Reservation.StatusEnum.Accepted;
-
+            sitting.Capacity = sitting.Capacity - reservation.GuestAmmount;
+            sitting.Guest_Total += reservation.GuestAmmount;
             _context.Reservation.Update(reservation);
+            _context.Sitting.Update(sitting);
 
             _context.SaveChanges();
-            return RedirectToAction("Index3");
+            return RedirectToAction(nameof(ReservationStatus));
 
             return View();
 
@@ -319,7 +346,7 @@ namespace BeanSceneAppV1.Controllers
             _context.Reservation.Update(reservation);
 
             _context.SaveChanges();
-            return RedirectToAction("Index3");
+            return RedirectToAction(nameof(ReservationStatus));
 
             return View();
 

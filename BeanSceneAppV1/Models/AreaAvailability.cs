@@ -22,14 +22,6 @@ namespace BeanSceneAppV1.Models
         [DisplayName("End Time")]
         [DataType(DataType.Time)]
         public TimeSpan End_Time { get; set; }
-        [Required]
-        public StatusEnum Status { get; set; }
-        
-        public enum StatusEnum
-        {
-            Available,
-            Na
-        }
 
     }
 }

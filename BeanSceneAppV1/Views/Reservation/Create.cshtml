@@ -28,10 +28,10 @@
                 @Html.DropDownListFor(model => model.Reservation.TimeSlotId, new SelectList(Model.TimeSlots, "Id", "Time"),
                 new {@class="form-control form-selevct"})
             </div>
-          @*  <div class="form-group">
-                <label asp-for="Reservation.SittingId" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Reservation.SittingId, new SelectList(Model.Sittings, "Id", "Sitting_Type"),
-                new {@class="form-control form-selevct"})
+            @*  <div class="form-group">
+            <label asp-for="Reservation.SittingId" class="control-label"></label>
+            @Html.DropDownListFor(model => model.Reservation.SittingId, new SelectList(Model.Sittings, "Id", "Sitting_Type"),
+            new {@class="form-control form-selevct"})
             </div>*@
             <div class="form-group">
                 <label asp-for="Reservation.GuestAmmount" class="control-label"></label>
@@ -60,11 +60,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Reservation.SeatingRequest" class="control-label"></label>
-                <input asp-for="Reservation.SeatingRequest"  class="form-control"  />
-                <span asp-validation-for="Reservation.SeatingRequest" class="text-danger"></span>          
-            </div>          
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input asp-for="Reservation.SeatingRequest" class="form-control" />
+                <span asp-validation-for="Reservation.SeatingRequest" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top:10px">
+                <input type="submit" value="Create" class="btn btn-primary createbtn" />
+            </div>
+            <div class="alert2"  style="margin-top:10px">
+                <p>Reservation Requested</p>
             </div>
         </form>
     </div>
@@ -74,6 +77,30 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<style>
+    .alert2 {
+        padding: 20px;
+        background-color: #04AA6D;
+        color: white;
+        visibility: hidden
+    }
+
+</style>
+<script>
+    const alert2 = document.getElementsByClassName("alert2")
+    const createbtn = document.getElementsByClassName("createbtn")
+
+    for (i = 0; i < alert.length; i++) {
+        for (j = 0; j < createbtn.length; j++) {
+            createbtn[j].onclick = function () {
+                console.log("help")
+                alert2[i].removeAttribute = "hidden";
+            }
+        }
+    }
+</script>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

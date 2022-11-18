@@ -78,9 +78,7 @@ namespace BeanSceneAppV1.Controllers
                 AreaId = areaAvailabilityVM.AreaAvailability.AreaId,
                 Area = areaAvailabilityVM.AreaAvailability.Area,
                 Start_Time = areaAvailabilityVM.AreaAvailability.Start_Time,
-                End_Time = areaAvailabilityVM.AreaAvailability.End_Time,
-                Status = areaAvailabilityVM.AreaAvailability.Status
-
+                End_Time = areaAvailabilityVM.AreaAvailability.End_Time
             };
             areaAvailabilityVM.Areas = _context.Area.ToList();
             areaAvailabilityVM.TimeSlots = _context.TimeSlot.ToList();
