@@ -25,6 +25,7 @@ namespace BeanSceneAppV1.Data
             // do this for reservations  and timeslots based on cros foot v2
             //builder.Entity<Area>(e => e.Property(e => e.Area_Name).HasColumnName("Area_Name"));
             builder.Entity<TableAvailability>().HasIndex(t => new { t.TableId, t.Date, t.TimeSlotId }).IsUnique();
+            builder.Entity<TableReservation>().HasIndex(t => new { t.TableId, t.ReservationId }).IsUnique();
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
 

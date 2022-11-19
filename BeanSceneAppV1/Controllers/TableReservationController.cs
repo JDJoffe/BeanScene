@@ -56,18 +56,59 @@ namespace BeanSceneAppV1.Controllers
             {
                 return NotFound();
             }
-            //var Reservation = await _context.Reservation
-            //    .Include(r => r.Sitting)
-            //    .Include(r => r.TimeSlot)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+
             var model = new TableReservationViewModel()
             {
-                Tables = _context.Table.ToList()
+                Tables = _context.Table.ToList(),
+
             };
+            var reservationQuery = _context.Reservation.Where(r => r.Id == id);
+            Reservation reservation = reservationQuery.First();
+            var timeslotQuery = _context.TimeSlot.Where(t => t.Id == reservation.TimeSlotId);
+            TimeSlot timeslot = timeslotQuery.First();
+
+
+
+            model.TableReservation = new TableReservation();
+            model.TableReservation.ReservationId = (int)id;
+            model.TableReservation.Reservation = reservation;
+            model.TableReservation.Reservation.TimeSlot = timeslot;
             //ViewData["ReservationId"] = Reservation.Id;
             return View(model);
             //return View(await applicationDbContext.ToListAsync());
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignTables(TableReservationViewModel tableReservationVM)
+        {
+
+            var tableReservation = new Models.TableReservation
+            {
+                Id = tableReservationVM.TableReservation.Id,
+                ReservationId = tableReservationVM.TableReservation.ReservationId,
+                TableId = tableReservationVM.TableReservation.TableId
+            };
+            
+            //if (ModelState.IsValid)
+            //{
+            
+
+            try
+            {
+                tableReservationVM.Tables = _context.Table.ToList();
+                _context.Add(tableReservation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            //}     
+            return View(tableReservation);
+        }
+
         // GET: TableReservation/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -93,7 +134,7 @@ namespace BeanSceneAppV1.Controllers
         {
             var model = new TableReservationViewModel()
             {
-                Tables = _context.Table.ToList()
+                Tables = _context.Table.ToList(),
             };
             return View(model);
         }
@@ -103,7 +144,7 @@ namespace BeanSceneAppV1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TableReservationViewModel tableReservationVM)
+        public async Task<IActionResult> Create(TableReservationViewModel tableReservationVM, int? id)
         {
             var tableReservation = new Models.TableReservation
             {
@@ -112,7 +153,6 @@ namespace BeanSceneAppV1.Controllers
                 TableId = tableReservationVM.TableReservation.TableId
             };
             tableReservationVM.Tables = _context.Table.ToList();
-
             //if (ModelState.IsValid)
             //{
             _context.Add(tableReservation);

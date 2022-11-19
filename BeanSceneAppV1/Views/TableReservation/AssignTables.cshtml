@@ -1,7 +1,9 @@
-﻿@model BeanSceneAppV1.ViewModels.TableReservationViewModel
+﻿@using static BeanSceneAppV1.Models.Reservation
+@model BeanSceneAppV1.ViewModels.TableReservationViewModel
 
 @{
     ViewData["Title"] = "AssignTables";
+
 }
 
 <h1>Assign</h1>
@@ -9,43 +11,33 @@
 <h4>Table Reservations</h4>
 <hr />
 <div class="row">
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.Date)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.Date) </dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.TimeSlot.Time) </dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.TimeSlot.Time)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.Email)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.Email) </dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.ReservationId)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.ReservationId) </dd>
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="AssignTables">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @* <div class="form-group">
             <label asp-for="TableReservation.Reservation.Id" class="control-label"></label>
             <select asp-for="TableReservation.Reservation.Id" class="form-control" asp-items="ViewBag.TableReservation.Reservation.Id"></select>
             </div>*@
-        <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.TableReservation.Reservation.Date)
-                @Html.DisplayNameFor(model => model.TableReservation.Reservation.TimeSlot.Time)
-        </dt>
-        <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.TableReservation.Reservation.Date)
-                @Html.DisplayFor(model => model.TableReservation.Reservation.TimeSlot.Time)
-             @*   @String.Format("",Model => Model.TableReservation.Reservation.Id)*@
-                
-        </dd>
-        <div class="form-group">
-            <label asp-for="TableReservation.TableId" class="control-label"></label>
+
+            <div class="form-group">
+                <label asp-for="TableReservation.TableId" class="control-label"></label>
                 @*bruh*@
                 @Html.DropDownListFor(model => model.TableReservation.TableId, new SelectList(Model.Tables, "Id", "Table_Name"),
-            new {@class="form-control form-select"})
+                new {@class="form-control form-select"})
+                <input asp-for="TableReservation.ReservationId" hidden value="@Model.TableReservation.ReservationId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
 
-                @* <Select asp-for="Table.Area_Id" name="Area" class="form-control" >
-            <option value="">Select an Area</option>
-            @foreach (var item in Model.Areas)
-            {
-            <option value="@item">@item.Area_Name</option>
-
-            }
-
-            </Select>  *@
-                @*<span asp-validation-for="Table.Area_Id" class="text-danger"></span>*@
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
-        </div>
+            </div>
         </form>
     </div>
 </div>
