@@ -130,37 +130,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: TableReservation/Create
-        public IActionResult Create()
-        {
-            var model = new TableReservationViewModel()
-            {
-                Tables = _context.Table.ToList(),
-            };
-            return View(model);
-        }
-
-        // POST: TableReservation/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TableReservationViewModel tableReservationVM, int? id)
-        {
-            var tableReservation = new Models.TableReservation
-            {
-                Id = tableReservationVM.TableReservation.Id,
-                ReservationId = tableReservationVM.TableReservation.ReservationId,
-                TableId = tableReservationVM.TableReservation.TableId
-            };
-            tableReservationVM.Tables = _context.Table.ToList();
-            //if (ModelState.IsValid)
-            //{
-            _context.Add(tableReservation);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-            //}     
-            return View(tableReservation);
-        }
+       
 
         // GET: TableReservation/Edit/5
         public async Task<IActionResult> Edit(int? id)
