@@ -145,7 +145,12 @@ namespace BeanSceneAppV1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create(ReservationViewModel reservationVM)
         {
-
+            // this prob dont work
+            var AreaAvailability = _context.AreaAvailability.Where(a => a.Date == reservationVM.Reservation.Date && reservationVM.Reservation.TimeSlot.Time >= a.Start_Time && reservationVM.Reservation.TimeSlot.Time <= a.End_Time);
+            if (AreaAvailability.First() != null)
+            {
+                return(View(reservationVM.Reservation));
+            }
             int sittingId = 0;
             SQLDAL _db;
             _db = new SQLDAL();
