@@ -10,6 +10,7 @@ using BeanSceneAppV1.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using BeanSceneAppV1.ViewModels;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BeanSceneAppV1.Controllers
 {
@@ -63,36 +64,40 @@ namespace BeanSceneAppV1.Controllers
             Reservation reservation = reservationQuery.First();
             var timeslotQuery = _context.TimeSlot.Where(t => t.Id == reservation.TimeSlotId);
             TimeSlot timeslot = timeslotQuery.First();
-            var tableAvailabilityQuery = _context.TableAvailability.ToList();
-            List<TableAvailability> tableAvailabilities = new List<TableAvailability>();
+            // var tableAvailabilityQuery = _context.TableAvailability.ToList();
+            List<TableAvailability> unavailableTables = new List<TableAvailability>();
             //var tablereservationQuery = _context.TableReservation.Include(t => t.Table).ToList();
             //List<TableReservation> tableReservations = new List<TableReservation>();
-            foreach (var item in tableAvailabilityQuery)
+            //foreach (var item in tableAvailabilityQuery)
+            //{
+            //    tableAvailabilities.Add(item);
+            //}
+            //TableReservationViewModel TableReservation = new TableReservationViewModel();
+            //List<Table> tableList = new List<Table>();
+            //if (tableAvailabilities.Count == 0)
+            //{
+            //    TableReservation.Tables = _context.Table.ToList();
+            //}
+            //else
+            //{
+            unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId)
+                .ToList();
+
+
+            List<Models.Table> availableTables = new List<Models.Table>();
+            availableTables = _context.Table.ToList();
+            // }
+            foreach (var item in unavailableTables)
             {
-                tableAvailabilities.Add(item);
+
+                availableTables.Remove(item.Table);
+
             }
-            TableReservationViewModel TableReservation = new TableReservationViewModel();
-            List<Table> tableList = new List<Table>();
-            if (tableAvailabilities.Count == 0)
-            {
-                TableReservation.Tables = _context.Table.ToList();
-            }
-            else
-            {
-                for (int i = 0; i < tableAvailabilities.Count; i++)
-                {
-                    TableReservation.Tables = _context.Table.Distinct().Where(t => t.Id == tableAvailabilities[i].TableId && (tableAvailabilities[i].Date == reservation.Date && tableAvailabilities[i].TimeSlotId == reservation.TimeSlotId ));
-                    tableList.Add((Table)TableReservation.Tables);
-                }
-            }
-            for (int i = 0; i < tableList.Count; i++)
-            {
-               // TableReservation.Tables = _context.Table.ToList().Remove(tableList[i]);
-            }
+
             var newmodel = new TableReservationViewModel()
             {
-                
-                Tables = _context.Table.ToList().Skip(tableList[1].Id)
+
+                Tables = availableTables
             };
             newmodel.TableReservation = new TableReservation();
             newmodel.TableReservation.ReservationId = (int)id;
@@ -113,14 +118,21 @@ namespace BeanSceneAppV1.Controllers
                 ReservationId = tableReservationVM.TableReservation.ReservationId,
                 TableId = tableReservationVM.TableReservation.TableId
             };
-
+            var tableAvailability = new Models.TableAvailability
+            {
+                Date = tableReservationVM.TableReservation.Reservation.Date,
+                TimeSlotId = tableReservationVM.TableReservation.Reservation.TimeSlotId,
+                TableId = tableReservationVM.TableReservation.TableId
+            };
             //if (ModelState.IsValid)
             //{
 
 
             try
             {
+
                 tableReservationVM.Tables = _context.Table.ToList();
+                _context.Add(tableAvailability);
                 _context.Add(tableReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "AssignTables";
-
+    
 }
 
 <h1>Assign</h1>
@@ -33,6 +33,8 @@
                 @Html.DropDownListFor(model => model.TableReservation.TableId, new SelectList(Model.Tables, "Id", "Table_Name"),
                 new {@class="form-control form-select"})
                 <input asp-for="TableReservation.ReservationId" hidden value="@Model.TableReservation.ReservationId" class="form-control" />
+                <input asp-for="TableReservation.Reservation.Date" type="datetime" hidden value="@Model.TableReservation.Reservation.Date"  class="form-control" />
+                <input asp-for="TableReservation.Reservation.TimeSlotId" hidden value="@Model.TableReservation.Reservation.TimeSlotId" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
