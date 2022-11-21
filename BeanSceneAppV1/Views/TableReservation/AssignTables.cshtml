@@ -32,6 +32,7 @@
                 @*bruh*@
                 @Html.DropDownListFor(model => model.TableReservation.TableId, new SelectList(Model.Tables, "Id", "Table_Name"),
                 new {@class="form-control form-select"})
+               @* passed values from controller go here as they do not transfer on submit otherwise.*@
                 <input asp-for="TableReservation.ReservationId" hidden value="@Model.TableReservation.ReservationId" class="form-control" />
                 <input asp-for="TableReservation.Reservation.Date" type="datetime" hidden value="@Model.TableReservation.Reservation.Date"  class="form-control" />
                 <input asp-for="TableReservation.Reservation.TimeSlotId" hidden value="@Model.TableReservation.Reservation.TimeSlotId" class="form-control" />

@@ -35,10 +35,29 @@ namespace BeanSceneAppV1.Controllers
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
+            // automatically when viewed find old reservations and reject them as they are no longer relevant
+            List<Reservation> oldReservations = new List<Reservation>();
+            oldReservations = _context.Reservation.Where(r => r.Date < DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay).ToList();
+
+            if (oldReservations.Count >=1)
+            {
+                foreach (var item in oldReservations)
+                {
+                    item.Status = Reservation.StatusEnum.Rejected;
+                    _context.Update(item);
+                }
+                await _context.SaveChangesAsync();
+
+            }
+            // get reservations.
             var applicationDbContext = _context.Reservation.Include(r => r.Sitting).Include(r => r.TimeSlot);
+
+           
+            // get the user
             ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
+                // get a list of the roles the user has
                 List<string> usrRoles = new List<string>();
                 var roles = await _userManager.GetRolesAsync(user);
                 foreach (var item in roles)
@@ -46,7 +65,7 @@ namespace BeanSceneAppV1.Controllers
                     usrRoles.Add(item.ToString());
                 }
 
-
+                // redirect user based on their role.
                 if (usrRoles.Contains("Manager"))
                 {
                     return View(await applicationDbContext.ToListAsync());
@@ -67,6 +86,7 @@ namespace BeanSceneAppV1.Controllers
         // GET: Reservation
         public async Task<IActionResult> IndexMember()
         {
+            // get reservations made by this member
             ApplicationUser user = await _userManager.GetUserAsync(User);
             
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
@@ -77,6 +97,7 @@ namespace BeanSceneAppV1.Controllers
         // GET: Reservation
         public async Task<IActionResult> ReservationStatus()
         {
+            // get reservations that are current or upcomming and have the requested status.
             // ApplicationUser user = await _userManager.GetUserAsync(User);
             var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay && r.Sitting.Capacity - r.GuestAmmount >=0).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());

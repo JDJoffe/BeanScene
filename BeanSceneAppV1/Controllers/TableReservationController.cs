@@ -37,75 +37,44 @@ namespace BeanSceneAppV1.Controllers
         // GET: Reservation
         public async Task<IActionResult> AssignTables(int? id)
         {
-            //var othercontext = _context.AreaAvailability;
-            // var othercontext2 = _context.TableAvailability;
-            //bool bam (Reservation r)
-            // {
-            //     othercontext2.Where(t => t.Date != r.Date && t.TimeSlotId != r.TimeSlotId);
-
-            //     if ( othercontext2.ToListAsync().Result.Count >=1 )
-            //     {
-            //         return false;
-            //     }
-            //     return true;
-            // }
-            // bool cheese = true;
-            // // ApplicationUser user = await _userManager.GetUserAsync(User);
-            // var applicationDbContext = _context.Reservation.Where(r=>  bam(r)  && cheese == true ).Include(r => r.Sitting).Include(r => r.TimeSlot);
-
+            // return if null
             if (id == null || _context.TableReservation == null)
             {
                 return NotFound();
             }
-
-
-
+            // get the reservation passed through id
             var reservationQuery = _context.Reservation.Where(r => r.Id == id);
             Reservation reservation = reservationQuery.First();
+            // get timeslot of reservation 
             var timeslotQuery = _context.TimeSlot.Where(t => t.Id == reservation.TimeSlotId);
             TimeSlot timeslot = timeslotQuery.First();
-            // var tableAvailabilityQuery = _context.TableAvailability.ToList();
+
+            // get unavailable tables from tableavailability
             List<TableAvailability> unavailableTables = new List<TableAvailability>();
-            //var tablereservationQuery = _context.TableReservation.Include(t => t.Table).ToList();
-            //List<TableReservation> tableReservations = new List<TableReservation>();
-            //foreach (var item in tableAvailabilityQuery)
-            //{
-            //    tableAvailabilities.Add(item);
-            //}
-            //TableReservationViewModel TableReservation = new TableReservationViewModel();
-            //List<Table> tableList = new List<Table>();
-            //if (tableAvailabilities.Count == 0)
-            //{
-            //    TableReservation.Tables = _context.Table.ToList();
-            //}
-            //else
-            //{
-            unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId)
-                .ToList();
+            unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
 
-
+            // get list of all tables
             List<Models.Table> availableTables = new List<Models.Table>();
             availableTables = _context.Table.ToList();
-            // }
+
+            // remove unavailable tables from list of all tables.
             foreach (var item in unavailableTables)
             {
-
                 availableTables.Remove(item.Table);
-
             }
-
-            var newmodel = new TableReservationViewModel()
+            // set data to new model
+            var model = new TableReservationViewModel()
             {
-
+                // pass available tables to model
                 Tables = availableTables
             };
-            newmodel.TableReservation = new TableReservation();
-            newmodel.TableReservation.ReservationId = (int)id;
-            newmodel.TableReservation.Reservation = reservation;
-            newmodel.TableReservation.Reservation.TimeSlot = timeslot;
-            //ViewData["ReservationId"] = Reservation.Id;
-            return View(newmodel);
-            //return View(await applicationDbContext.ToListAsync());
+            model.TableReservation = new TableReservation();
+            model.TableReservation.ReservationId = (int)id;
+            model.TableReservation.Reservation = reservation;
+            model.TableReservation.Reservation.TimeSlot = timeslot;
+            // pass model
+            return View(model);
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
