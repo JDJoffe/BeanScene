@@ -132,6 +132,17 @@ namespace BeanSceneAppV1.Controllers
                 Sittings = _context.Sitting.ToList(),
                 TimeSlots = _context.TimeSlot.ToList()
             };
+            // get user
+            ApplicationUser user = _userManager.GetUserAsync(User).Result;
+            // check if user not null before autofill
+            if (user != null)
+            {               
+                model.Reservation = new Reservation();
+                model.Reservation.FirstName = user.First_Name;
+                model.Reservation.LastName = user.Last_Name;
+                model.Reservation.Email = user.Email;
+                model.Reservation.Phone = user.PhoneNumber;
+            }
             //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id");
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id");
             return View(model);
