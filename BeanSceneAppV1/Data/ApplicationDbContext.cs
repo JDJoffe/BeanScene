@@ -38,7 +38,6 @@ namespace BeanSceneAppV1.Data
             {
                 builder.Property(u => u.First_Name).HasMaxLength(255);
                 builder.Property(u => u.Last_Name).HasMaxLength(255);
-
             }
 
         }

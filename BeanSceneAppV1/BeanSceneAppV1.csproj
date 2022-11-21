@@ -25,4 +25,8 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\CoffeeBackdrop.jpg" />
+  </ItemGroup>
+
 </Project>
