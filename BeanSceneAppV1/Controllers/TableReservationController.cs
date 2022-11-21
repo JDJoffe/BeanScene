@@ -57,24 +57,49 @@ namespace BeanSceneAppV1.Controllers
                 return NotFound();
             }
 
-            var model = new TableReservationViewModel()
-            {
-                Tables = _context.Table.ToList(),
 
-            };
+
             var reservationQuery = _context.Reservation.Where(r => r.Id == id);
             Reservation reservation = reservationQuery.First();
             var timeslotQuery = _context.TimeSlot.Where(t => t.Id == reservation.TimeSlotId);
             TimeSlot timeslot = timeslotQuery.First();
-
-
-
-            model.TableReservation = new TableReservation();
-            model.TableReservation.ReservationId = (int)id;
-            model.TableReservation.Reservation = reservation;
-            model.TableReservation.Reservation.TimeSlot = timeslot;
+            var tableAvailabilityQuery = _context.TableAvailability.ToList();
+            List<TableAvailability> tableAvailabilities = new List<TableAvailability>();
+            //var tablereservationQuery = _context.TableReservation.Include(t => t.Table).ToList();
+            //List<TableReservation> tableReservations = new List<TableReservation>();
+            foreach (var item in tableAvailabilityQuery)
+            {
+                tableAvailabilities.Add(item);
+            }
+            TableReservationViewModel TableReservation = new TableReservationViewModel();
+            List<Table> tableList = new List<Table>();
+            if (tableAvailabilities.Count == 0)
+            {
+                TableReservation.Tables = _context.Table.ToList();
+            }
+            else
+            {
+                for (int i = 0; i < tableAvailabilities.Count; i++)
+                {
+                    TableReservation.Tables = _context.Table.Distinct().Where(t => t.Id == tableAvailabilities[i].TableId && (tableAvailabilities[i].Date == reservation.Date && tableAvailabilities[i].TimeSlotId == reservation.TimeSlotId ));
+                    tableList.Add((Table)TableReservation.Tables);
+                }
+            }
+            for (int i = 0; i < tableList.Count; i++)
+            {
+               // TableReservation.Tables = _context.Table.ToList().Remove(tableList[i]);
+            }
+            var newmodel = new TableReservationViewModel()
+            {
+                
+                Tables = _context.Table.ToList().Skip(tableList[1].Id)
+            };
+            newmodel.TableReservation = new TableReservation();
+            newmodel.TableReservation.ReservationId = (int)id;
+            newmodel.TableReservation.Reservation = reservation;
+            newmodel.TableReservation.Reservation.TimeSlot = timeslot;
             //ViewData["ReservationId"] = Reservation.Id;
-            return View(model);
+            return View(newmodel);
             //return View(await applicationDbContext.ToListAsync());
         }
         [HttpPost]
@@ -88,10 +113,10 @@ namespace BeanSceneAppV1.Controllers
                 ReservationId = tableReservationVM.TableReservation.ReservationId,
                 TableId = tableReservationVM.TableReservation.TableId
             };
-            
+
             //if (ModelState.IsValid)
             //{
-            
+
 
             try
             {
@@ -130,7 +155,7 @@ namespace BeanSceneAppV1.Controllers
         }
 
         // GET: TableReservation/Create
-       
+
 
         // GET: TableReservation/Edit/5
         public async Task<IActionResult> Edit(int? id)
