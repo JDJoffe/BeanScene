@@ -35,9 +35,9 @@ namespace BeanSceneAppV1.Controllers
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
-            // automatically when viewed find old reservations and reject them as they are no longer relevant
+            // automatically when viewed find old unnatended requested reservations and reject them as they are no longer relevant
             List<Reservation> oldReservations = new List<Reservation>();
-            oldReservations = _context.Reservation.Where(r => r.Date < DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay).ToList();
+            oldReservations = _context.Reservation.Where(r => r.Date < DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay && r.Status == Reservation.StatusEnum.Requested).ToList();
 
             if (oldReservations.Count >=1)
             {
