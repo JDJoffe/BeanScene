@@ -86,7 +86,7 @@ namespace BeanSceneAppV1.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
             //}
-            return View(table);
+            //return View(table);
         }
 
         // GET: Table/Edit/5

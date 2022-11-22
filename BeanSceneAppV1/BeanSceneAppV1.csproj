@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-BeanSceneAppV1-9C630276-3EA6-4CA3-964E-C2E60D7E37A4</UserSecretsId>
   </PropertyGroup>

@@ -51,7 +51,7 @@ namespace BeanSceneAppV1.Controllers
 
             // get unavailable tables from tableavailability
             List<TableAvailability> unavailableTables = new List<TableAvailability>();
-            unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
+            unavailableTables =  _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
 
             // get list of all tables
             List<Models.Table> availableTables = new List<Models.Table>();
@@ -112,7 +112,7 @@ namespace BeanSceneAppV1.Controllers
                 throw;
             }
             //}     
-            return View(tableReservation);
+            //return View(tableReservation);
         }
 
         // GET: TableReservation/Details/5

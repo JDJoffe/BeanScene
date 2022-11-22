@@ -22,7 +22,6 @@ namespace BeanSceneAppV1.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationUser> _roleManager;
 
         public ReservationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -358,6 +357,7 @@ namespace BeanSceneAppV1.Controllers
         [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> Accept(int? id)
         {
+
             var reservation = await _context.Reservation.FindAsync(id);
             var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
 
@@ -370,7 +370,7 @@ namespace BeanSceneAppV1.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(ReservationStatus));
 
-            return View();
+            //return View();
 
         }
         [Authorize(Roles = "Manager, Staff")]
@@ -385,7 +385,7 @@ namespace BeanSceneAppV1.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(ReservationStatus));
 
-            return View();
+            //return View();
 
         }
     }

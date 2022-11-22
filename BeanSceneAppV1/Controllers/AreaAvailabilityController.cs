@@ -91,7 +91,7 @@ namespace BeanSceneAppV1.Controllers
             //}
             //ViewData["AreaId"] = new SelectList(_context.Area, "Id", "Name", areaAvailability.AreaId);
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", areaAvailability.TimeSlotId);
-            return View(areaAvailability);
+            //return View(areaAvailability);
         }
 
         // GET: AreaAvailability/Edit/5

@@ -95,7 +95,7 @@ namespace BeanSceneAppV1.Controllers
             //}
             //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Table_Name", tableAvailability.TableId);
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", tableAvailability.TimeSlotId);
-            return View(tableAvailability);
+            //return View(tableAvailability);
         }
 
         // GET: TableAvailability/Edit/5
