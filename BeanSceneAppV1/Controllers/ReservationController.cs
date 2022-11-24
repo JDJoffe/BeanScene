@@ -36,9 +36,9 @@ namespace BeanSceneAppV1.Controllers
         {
             // automatically when viewed find old unnatended requested reservations and reject them as they are no longer relevant
             List<Reservation> oldReservations = new List<Reservation>();
-            oldReservations = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date < DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay) ).ToList();
+            oldReservations = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date < DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay)).ToList();
 
-            if (oldReservations.Count >=1)
+            if (oldReservations.Count >= 1)
             {
                 foreach (var item in oldReservations)
                 {
@@ -51,7 +51,7 @@ namespace BeanSceneAppV1.Controllers
             // get reservations.
             var applicationDbContext = _context.Reservation.Include(r => r.Sitting).Include(r => r.TimeSlot);
 
-           
+
             // get the user
             ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user != null)
@@ -73,7 +73,7 @@ namespace BeanSceneAppV1.Controllers
                 else if (usrRoles.Contains("Staff") || usrRoles.Contains("Member"))
                 {
                     return RedirectToAction(nameof(IndexMember));
-                    
+
                 }
             }
             else { return RedirectToAction(nameof(Create)); }
@@ -87,7 +87,7 @@ namespace BeanSceneAppV1.Controllers
         {
             // get reservations made by this member
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            
+
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -98,10 +98,10 @@ namespace BeanSceneAppV1.Controllers
         {
             // get reservations that are current or upcomming and have the requested status.
             // ApplicationUser user = await _userManager.GetUserAsync(User);
-            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || ( r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay) ).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay)).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
-        [Authorize(Roles ="Manager, Staff")]
+        [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> CompletedReservations()
         {
             var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Seated).Include(r => r.Sitting).Include(r => r.TimeSlot);
@@ -142,7 +142,7 @@ namespace BeanSceneAppV1.Controllers
             ApplicationUser user = _userManager.GetUserAsync(User).Result;
             // check if user not null before autofill
             if (user != null)
-            {               
+            {
                 model.Reservation = new Reservation();
                 model.Reservation.FirstName = user.First_Name;
                 model.Reservation.LastName = user.Last_Name;
@@ -360,7 +360,7 @@ namespace BeanSceneAppV1.Controllers
         {
             return _context.Reservation.Any(e => e.Id == id);
         }
- 
+
 
         [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> Accept(int? id)
@@ -400,10 +400,16 @@ namespace BeanSceneAppV1.Controllers
         {
             var reservation = await _context.Reservation.FindAsync(id);
             var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
-
+            var tableReservations = _context.TableReservation.Where(t => t.ReservationId == id).ToList();
             reservation.Status = Reservation.StatusEnum.Completed;
             sitting.Guest_Total -= reservation.GuestAmmount;
+
             sitting.Tables_Available += reservation.GuestAmmount / 4;
+            if (reservation.GuestAmmount % 4 >= 1)
+            {
+                sitting.Tables_Available++;
+            }
+
             _context.Reservation.Update(reservation);
             _context.Sitting.Update(sitting);
 
