@@ -92,6 +92,7 @@ INSERT INTO TableReservation (TableId,ReservationId) VALUES
 (11,2),(12,2),(13,2),
 (21,3),(22,3),(23,3)
 
+
 GO
 
 INSERT INTO TableAvailability (TableId, [Date], TimeSlotId) VALUES

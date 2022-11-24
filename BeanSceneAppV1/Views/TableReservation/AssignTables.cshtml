@@ -15,8 +15,8 @@
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.Date) </dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.TimeSlot.Time) </dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.TimeSlot.Time)</dd>
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Table.Table_Name) </dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Table.Table_Name)</dd>   
+@*    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Table.Table_Name) </dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Table.Table_Name)</dd> *@  
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.GuestAmmount) </dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.GuestAmmount)</dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.FirstName)</dt>
@@ -45,10 +45,10 @@
                 <input asp-for="TableReservation.Reservation.Date" type="datetime" hidden value="@Model.TableReservation.Reservation.Date"  class="form-control" />
                 <input asp-for="TableReservation.Reservation.TimeSlotId" hidden value="@Model.TableReservation.Reservation.TimeSlotId" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="form-group">             
                 <input type="submit" value="Create" class="btn btn-primary" />
-
             </div>
+
         </form>
     </div>
 </div>

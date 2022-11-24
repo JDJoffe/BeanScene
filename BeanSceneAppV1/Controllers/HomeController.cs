@@ -15,7 +15,11 @@ namespace BeanSceneAppV1.Controllers
         {
             _logger = logger;
         }
+        public IActionResult Reserve()
+        {
 
+            return RedirectToAction("Index", "ReservationControler", new {ReservationController = ""});
+        }
         public IActionResult Index()
         {
             return View();

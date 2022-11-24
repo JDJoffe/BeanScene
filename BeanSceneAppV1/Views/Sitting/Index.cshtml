@@ -40,9 +40,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.Guest_Total)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Tables_Available)</td>
                                     <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    <td>@Html.Partial("_TableCrudTemplate", new CrudTemplate{AreaId = item.Id})</td>
                                     </td>
                                 </tr>
                             }
@@ -58,9 +56,10 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a type="button" class="btn btn-primary btn-sm" href="@Url.Action("Create")">
+    <span class="glyphicon glyphicon-plus"></span>
+    <span>New</span>
+</a>
 <div class="form-group" style="flex-direction:row">
 
     @{

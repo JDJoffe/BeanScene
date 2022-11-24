@@ -30,11 +30,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.Date)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Start_Time)</td>
                                     <td>@Html.DisplayFor(modelItem => item.End_Time)</td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                    </td>
+                                    <td>@Html.Partial("_TableCrudTemplate", new CrudTemplate{AreaId = item.Id})</td>
                                 </tr>
                             }
 
@@ -48,9 +44,10 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a type="button" class="btn btn-primary btn-sm" href="@Url.Action("Create")">
+    <span class="glyphicon glyphicon-plus"></span>
+    <span>New</span>
+</a>
 <div class="form-group" style="flex-direction:row">
 
     @{

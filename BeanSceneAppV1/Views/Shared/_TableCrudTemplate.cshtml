@@ -1,6 +1,6 @@
 ﻿@model BeanSceneAppV1.Models.CrudTemplate
 @using BeanSceneAppV1.Models;
-<td style="width:400px">
+<td >
     <div class="btn-group" role="group">
         @Html.Partial("_CrudTemplate", new CrudTemplate{
         Action = "Edit",
@@ -13,6 +13,8 @@
         TimeSlotId           =   Model.TimeSlotId,
         ReservationId        =   Model.ReservationId,
         TableAvailabilityId  =   Model.TableAvailabilityId,
+        AreaAvailabilityId   =   Model.AreaAvailabilityId,
+        TableReservationId   =   Model.TableReservationId,
         MemberId             =   Model.MemberId,
         MemberShipTypeId     =   Model.MemberShipTypeId
         })
@@ -27,6 +29,8 @@
         TimeSlotId           =   Model.TimeSlotId,
         ReservationId        =   Model.ReservationId,
         TableAvailabilityId  =   Model.TableAvailabilityId,
+        AreaAvailabilityId   =   Model.AreaAvailabilityId,
+        TableReservationId   =   Model.TableReservationId,
         MemberId             =   Model.MemberId,
         MemberShipTypeId     =   Model.MemberShipTypeId
         })
@@ -41,6 +45,8 @@
         TimeSlotId           =   Model.TimeSlotId,
         ReservationId        =   Model.ReservationId,
         TableAvailabilityId  =   Model.TableAvailabilityId,
+        TableReservationId   =   Model.TableReservationId,
+        AreaAvailabilityId   =   Model.AreaAvailabilityId,
         MemberId             =   Model.MemberId,
         MemberShipTypeId     =   Model.MemberShipTypeId
         })

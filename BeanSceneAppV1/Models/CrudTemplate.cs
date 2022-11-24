@@ -15,8 +15,11 @@ namespace BeanSceneAppV1.Models
         public int? TimeSlotId { get; set; }
         public int? ReservationId { get; set; }
         public int? TableAvailabilityId { get; set; }
+        public int? AreaAvailabilityId { get; set; }
+        public int? TableReservationId { get; set; }
         public int? MemberId { get; set; }
         public int? MemberShipTypeId { get; set; }
+        
         public string ActionParameter
         {
             get
@@ -44,9 +47,17 @@ namespace BeanSceneAppV1.Models
                 {
                     param.Append(String.Format("{0}", ReservationId));
                 }
+                if (TableReservationId != null && TableReservationId > 0)
+                {
+                    param.Append(String.Format("{0}", TableReservationId));
+                }
                 if (TableAvailabilityId != null && TableAvailabilityId > 0)
                 {
                     param.Append(String.Format("{0}", TableAvailabilityId));
+                }
+                if (AreaAvailabilityId != null && AreaAvailabilityId > 0)
+                {
+                    param.Append(String.Format("{0}", AreaAvailabilityId));
                 }
                 if (MemberId != null && MemberId > 0)
                 {

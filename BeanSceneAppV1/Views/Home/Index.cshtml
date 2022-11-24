@@ -2,55 +2,75 @@
     ViewData["Title"] = "Home Page";
 
 }
-<div>
-    
+<body>
+
     <div class="text-center" style="align-content:center">
         <div id="container">
+
             <div class="backgroundimg"></div>
         </div>
         <div id="box" style="opacity:100%">
-            <h3 class="display-4" style="font-size:50px; font-family:'Book Antiqua'">Welcome to the </h3>
-            <h1 class="display-4" style="font-size:70px; font-family:'Book Antiqua'">Bean Scene </h1>
-        </div>
+            <h3 style="font-size:50px; width:400px; font-family:'Book Antiqua'">Welcome to the </h3>
+            <h1 style="font-size:70px; width:400px; font-family:'Book Antiqua'">Bean Scene </h1>
+            <div style="">
+                <h4 style="font-size:30px; width:400px; margin-top:300px; font-family:Verdana">Make a Reservation Today</h4>
+                @*<button asp-controller="HomeController" asp-action="Reserve">Reserve</button>*@
+               
+            </div>
 
+
+        </div>
+        @*https://codepen.io/goodkatz/pen/LYPGxQz*@
 
 
     </div>
-</div>
+</body>
 <style>
     #container {
         position: absolute;
         top: 85px;
         opacity: 70%;
         overflow: hidden;
-        height:720px;
-        width:100%;
+        height: 720px;
+        width: 100%;
         max-width: 1280px;
     }
 
     #box {
+        justify-content: center;
+        align-content: center;
         position: absolute;
         top: 130px;
-        left: 100px;
-        right: 100px;
+        left: 400px;
+        right: 400px;
     }
-    .image-blurred-edge{
 
+    .image-blurred-edge {
     }
+
     .backgroundimg {
         background-image: url("CoffeeBackdrop.jpg");
-        
         max-height: 720px;
         max-width: 1280px;
         min-height: 360px;
         min-width: 640px;
-        height:720px;
-        width:auto;
+        height: 720px;
+        width: auto;
         background-size: auto;
         object-fit: cover;
         opacity: 50%;
         background-repeat: no-repeat;
         box-shadow: 0 0 60px 70px #101010 inset
     }
+
+    .html, .body {
+        width: 100%;
+        height: 100vh;
+    }
+    /*a*/
+
+
+
 </style>
+
 

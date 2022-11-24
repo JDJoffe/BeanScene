@@ -4,12 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<h1>Area</h1>
+<a type="button" class="btn btn-primary btn-sm" href="@Url.Action("Create")">
+    <span class="glyphicon glyphicon-plus"></span>
+    <span>New</span>
+</a>
+<br />
+<table class="table table-condensed table-hover">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(m => m.Name)</th>
@@ -21,10 +22,11 @@
             <tr>
                 <td>@Html.DisplayFor(m => item.Name)</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <td>@Html.Partial("_TableCrudTemplate", new CrudTemplate{AreaId = item.Id})</td>
+               @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                </td>*@
             </tr>
         }
     </tbody>
