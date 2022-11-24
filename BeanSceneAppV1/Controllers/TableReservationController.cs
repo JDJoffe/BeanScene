@@ -51,7 +51,7 @@ namespace BeanSceneAppV1.Controllers
 
             // get unavailable tables from tableavailability
             List<TableAvailability> unavailableTables = new List<TableAvailability>();
-            unavailableTables =  _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
+            unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
 
             // get list of all tables
             List<Models.Table> availableTables = new List<Models.Table>();
@@ -95,12 +95,22 @@ namespace BeanSceneAppV1.Controllers
             };
             //if (ModelState.IsValid)
             //{
+            Reservation reservation = await _context.Reservation.FindAsync(tableReservation.ReservationId);
+            //Reservation reservation = reservationQuery.First();
+            Sitting sitting = await _context.Sitting.FindAsync(reservation.SittingId);
+            
+            if (reservation.Status != Reservation.StatusEnum.Seated)
+            {
+                reservation.Status = Reservation.StatusEnum.Seated;
+            }
 
-
+            sitting.Tables_Available--;
             try
             {
 
                 tableReservationVM.Tables = _context.Table.ToList();
+                _context.Update(sitting);
+                _context.Update(reservation);
                 _context.Add(tableAvailability);
                 _context.Add(tableReservation);
                 await _context.SaveChangesAsync();

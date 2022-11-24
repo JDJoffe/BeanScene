@@ -111,7 +111,7 @@ namespace BeanSceneAppV1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Area");
+                    b.ToTable("Area", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.AreaAvailability", b =>
@@ -138,7 +138,7 @@ namespace BeanSceneAppV1.Migrations
 
                     b.HasIndex("AreaId");
 
-                    b.ToTable("AreaAvailability");
+                    b.ToTable("AreaAvailability", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.Reservation", b =>
@@ -190,7 +190,7 @@ namespace BeanSceneAppV1.Migrations
 
                     b.HasIndex("TimeSlotId");
 
-                    b.ToTable("Reservation");
+                    b.ToTable("Reservation", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.Sitting", b =>
@@ -227,7 +227,7 @@ namespace BeanSceneAppV1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sitting");
+                    b.ToTable("Sitting", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.Table", b =>
@@ -252,7 +252,7 @@ namespace BeanSceneAppV1.Migrations
 
                     b.HasIndex("AreaId");
 
-                    b.ToTable("Table");
+                    b.ToTable("Table", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.TableAvailability", b =>
@@ -279,7 +279,7 @@ namespace BeanSceneAppV1.Migrations
                     b.HasIndex("TableId", "Date", "TimeSlotId")
                         .IsUnique();
 
-                    b.ToTable("TableAvailability");
+                    b.ToTable("TableAvailability", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.TableReservation", b =>
@@ -303,7 +303,7 @@ namespace BeanSceneAppV1.Migrations
                     b.HasIndex("TableId", "ReservationId")
                         .IsUnique();
 
-                    b.ToTable("TableReservation");
+                    b.ToTable("TableReservation", (string)null);
                 });
 
             modelBuilder.Entity("BeanSceneAppV1.Models.TimeSlot", b =>
@@ -319,7 +319,7 @@ namespace BeanSceneAppV1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeSlot");
+                    b.ToTable("TimeSlot", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

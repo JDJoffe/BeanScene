@@ -36,7 +36,7 @@ namespace BeanSceneAppV1.Controllers
         {
             // automatically when viewed find old unnatended requested reservations and reject them as they are no longer relevant
             List<Reservation> oldReservations = new List<Reservation>();
-            oldReservations = _context.Reservation.Where(r => r.Date < DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay && r.Status == Reservation.StatusEnum.Requested).ToList();
+            oldReservations = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date < DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay) ).ToList();
 
             if (oldReservations.Count >=1)
             {
@@ -91,16 +91,23 @@ namespace BeanSceneAppV1.Controllers
             var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
-        [Authorize(Roles = "Manager, Staff")]
 
+        [Authorize(Roles = "Manager, Staff")]
         // GET: Reservation
         public async Task<IActionResult> ReservationStatus()
         {
             // get reservations that are current or upcomming and have the requested status.
             // ApplicationUser user = await _userManager.GetUserAsync(User);
-            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay && r.Sitting.Capacity - r.GuestAmmount >=0).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || ( r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay) ).Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
-        }     
+        }
+        [Authorize(Roles ="Manager, Staff")]
+        public async Task<IActionResult> CompletedReservations()
+        {
+            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Seated).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         [Authorize(Roles = "Manager, Staff, Member")]
         // GET: Reservation/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -141,6 +148,7 @@ namespace BeanSceneAppV1.Controllers
                 model.Reservation.LastName = user.Last_Name;
                 model.Reservation.Email = user.Email;
                 model.Reservation.Phone = user.PhoneNumber;
+                model.Reservation.Date = DateTime.Today.Date;
             }
             //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id");
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id");
@@ -156,11 +164,11 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> Create(ReservationViewModel reservationVM)
         {
             // this prob dont work
-            var AreaAvailability = _context.AreaAvailability.Where(a => a.Date == reservationVM.Reservation.Date && reservationVM.Reservation.TimeSlot.Time >= a.Start_Time && reservationVM.Reservation.TimeSlot.Time <= a.End_Time);
-            if (AreaAvailability.First() != null)
-            {
-                return(View(reservationVM.Reservation));
-            }
+            //var AreaAvailability = _context.AreaAvailability.Where(a => a.Date == reservationVM.Reservation.Date && reservationVM.Reservation.TimeSlot.Time >= a.Start_Time && reservationVM.Reservation.TimeSlot.Time <= a.End_Time);
+            //if (AreaAvailability.First() != null)
+            //{
+            //    return(View(reservationVM.Reservation));
+            //}
             int sittingId = 0;
             SQLDAL _db;
             _db = new SQLDAL();
@@ -362,7 +370,6 @@ namespace BeanSceneAppV1.Controllers
             var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
 
             reservation.Status = Reservation.StatusEnum.Accepted;
-            sitting.Capacity = sitting.Capacity - reservation.GuestAmmount;
             sitting.Guest_Total += reservation.GuestAmmount;
             _context.Reservation.Update(reservation);
             _context.Sitting.Update(sitting);
@@ -388,5 +395,21 @@ namespace BeanSceneAppV1.Controllers
             //return View();
 
         }
+        [Authorize(Roles = "Manager, Staff")]
+        public async Task<IActionResult> Complete(int? id)
+        {
+            var reservation = await _context.Reservation.FindAsync(id);
+            var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
+
+            reservation.Status = Reservation.StatusEnum.Completed;
+            sitting.Guest_Total -= reservation.GuestAmmount;
+            sitting.Tables_Available += reservation.GuestAmmount / 4;
+            _context.Reservation.Update(reservation);
+            _context.Sitting.Update(sitting);
+
+            _context.SaveChanges();
+            return RedirectToAction(nameof(ReservationStatus));
+        }
+
     }
 }

@@ -44,7 +44,9 @@ namespace BeanSceneAppV1.Models
         {
             Requested,
             Rejected,
-            Accepted
+            Accepted,
+            Seated,
+            Completed
         }
     }
 }
