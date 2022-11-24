@@ -8,13 +8,7 @@ namespace BeanSceneAppV1.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Status",
-                table: "TableAvailability");
-
-            migrationBuilder.DropColumn(
-                name: "Status",
-                table: "AreaAvailability");
+          
 
             migrationBuilder.CreateTable(
                 name: "TableReservation",
@@ -58,19 +52,7 @@ namespace BeanSceneAppV1.Migrations
             migrationBuilder.DropTable(
                 name: "TableReservation");
 
-            migrationBuilder.AddColumn<int>(
-                name: "Status",
-                table: "TableAvailability",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "Status",
-                table: "AreaAvailability",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+          
         }
     }
 }

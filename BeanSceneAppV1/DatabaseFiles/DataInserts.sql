@@ -1,4 +1,4 @@
-
+--aspnet-BeanSceneAppV1-9C630276-3EA6-4CA3-964E-C2E60D7E37A4
 INSERT INTO [Area] (Name)VALUES
 ('Main'),
 ('Balcony'),
@@ -78,6 +78,33 @@ INSERT INTO [Sitting] (Sitting_Type, Capacity, Guest_Total, Tables_Available, St
 
 GO
 
+
+SET DATEFORMAT DMY
+INSERT INTO Reservation ([Date], TimeSlotId,SittingId, GuestAmmount, FirstName, LastName, Phone, Email, SeatingRequest, [Status] ) VALUES
+('2022-11-24',9,1,6,'Allen','Bates','04100','Allen@Gmail.com','Main By the window',4),
+('2022-11-24',12,3,12,'Joe','Taylor','04100','Joe@Gmail.com','Balcony',4),
+('2022-11-24',12,3,4,'Gary','Faulkner','04100','GaryFaulkner1@Gmail.com','Outside',4)
+
+GO
+
+INSERT INTO TableReservation (TableId,ReservationId) VALUES
+(1,1),(2,1),
+(11,2),(12,2),(13,2),
+(21,3),(22,3),(23,3)
+
+GO
+
+INSERT INTO TableAvailability (TableId, [Date], TimeSlotId) VALUES
+(1,'2022-11-24',9 ),
+(2,'2022-11-24',9 ),
+(11,'2022-11-24',12 ),
+(12,'2022-11-24',12 ),
+(13,'2022-11-24',12 ),
+(21,'2022-11-24',12 ),
+(22,'2022-11-24',12 ),
+(23,'2022-11-24',12 )
+
+GO
 -- ================================================
 -- Template generated from Template Explorer using:
 -- Create Procedure (New Menu).SQL
@@ -153,7 +180,7 @@ BEGIN
 	DECLARE @Time TIME(7) 
 	DECLARE @TimeResult TIME(7)
 	
-	EXEC USP_GetTime 11,   @Time OUTPUT;
+	EXEC USP_GetTime @TimeSlotId,   @Time OUTPUT;
 	SET DATEFORMAT DMY
 	SELECT Id 
 	FROM SITTING s 
