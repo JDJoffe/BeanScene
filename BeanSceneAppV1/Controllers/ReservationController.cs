@@ -250,6 +250,7 @@ namespace BeanSceneAppV1.Controllers
             }
             var model = new ReservationViewModel()
             {
+                Reservation = reservation,
                 Sittings = _context.Sitting.ToList(),
                 TimeSlots = _context.TimeSlot.ToList()
             };
