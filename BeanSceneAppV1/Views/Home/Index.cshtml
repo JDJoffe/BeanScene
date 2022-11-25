@@ -2,41 +2,60 @@
     ViewData["Title"] = "Home Page";
 
 }
-<body>
+<div class="content">
 
-    <div class="text-center" style="align-content:center">
-        <div id="container">
 
-            <div class="backgroundimg"></div>
-        </div>
-        <div id="box" style="opacity:100%">
-            <h3 style="font-size:50px; width:400px; font-family:'Book Antiqua'">Welcome to the </h3>
-            <h1 style="font-size:70px; width:400px; font-family:'Book Antiqua'">Bean Scene </h1>
-            <div style="">
-                <h4 style="font-size:30px; width:400px; margin-top:300px; font-family:Verdana">Make a Reservation Today</h4>
-                @*<button asp-controller="HomeController" asp-action="Reserve">Reserve</button>*@
-               
+    <div style="margin-bottom:10px; ">
+
+        <div class="text-center" style="align-content:center">
+            <div id="homecontainer">
+
+                <div class="backgroundimg"></div>
+            </div>
+            <div id="txtbox" style="opacity:100%">
+                <h3 style="font-size:50px; width:400px; font-family:'Book Antiqua'">Welcome to the </h3>
+                <h1 style="font-size:70px; width:400px; font-family:'Book Antiqua'">Bean Scene </h1>
+                <div style="">
+                    <h4 style="font-size:30px; width:400px; margin-top:300px; font-family:Verdana">Make a Reservation Today</h4>
+                    @*<button asp-controller="HomeController" asp-action="Reserve">Reserve</button>*@
+                   @* <div class="homecontents">
+                        <div class="box">
+                            <div class="homecolumn"></div>
+                             <div class="homecolumn"></div>
+                              <div class="homecolumn"></div>
+                            <div class="homecolumn"></div>
+
+                        </div>
+                    </div>*@
+                </div>
+              
+                        
+                   
+
+
             </div>
 
 
+
+
         </div>
-        @*https://codepen.io/goodkatz/pen/LYPGxQz*@
-
-
     </div>
-</body>
+</div>
 <style>
-    #container {
-        position: absolute;
-        top: 85px;
+    #homecontainer {
+        margin-top:20px;
+        position: relative;
+        background-attachment: fixed;
         opacity: 70%;
         overflow: hidden;
         height: 720px;
-        width: 100%;
+        width: 1280px;
         max-width: 1280px;
+        box-shadow: 0 0 30px 30px #101010 inset
     }
 
-    #box {
+    #txtbox {
+       
         justify-content: center;
         align-content: center;
         position: absolute;
@@ -48,19 +67,43 @@
     .image-blurred-edge {
     }
 
+    .homecontents {
+        width: 170%;
+        margin-left: -35%;
+        margin-top: 10%;
+        height: 300px;
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+    }
+
+    .box {
+        height: 100%;
+        width: 100%;
+       
+        background-color: #202020;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .homecolumn {
+        flex: 1;
+        border:solid;
+        border-color: goldenrod;
+        height: 100%;
+    }
+
     .backgroundimg {
+        background-attachment:fixed;
+        background-size:100%;
         background-image: url("CoffeeBackdrop.jpg");
-        max-height: 720px;
-        max-width: 1280px;
-        min-height: 360px;
-        min-width: 640px;
+        top:20px;
         height: 720px;
-        width: auto;
-        background-size: auto;
+        width: 1280px;
         object-fit: cover;
-        opacity: 50%;
+        opacity: 80%;
         background-repeat: no-repeat;
-        box-shadow: 0 0 60px 70px #101010 inset
+        box-shadow: 0 0 30px 30px #101010 inset
     }
 
     .html, .body {
