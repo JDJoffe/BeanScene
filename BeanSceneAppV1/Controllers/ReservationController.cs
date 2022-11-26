@@ -192,7 +192,7 @@ namespace BeanSceneAppV1.Controllers
                 TimeSlotId = reservationVM.Reservation.TimeSlotId,
                 Sitting = reservationVM.Reservation.Sitting,
                 SittingId = sittingId,
-                GuestAmmount = reservationVM.Reservation.GuestAmmount,
+                GuestAmount = reservationVM.Reservation.GuestAmount,
                 FirstName = reservationVM.Reservation.FirstName,
                 LastName = reservationVM.Reservation.LastName,
                 Phone = reservationVM.Reservation.Phone,
@@ -254,6 +254,7 @@ namespace BeanSceneAppV1.Controllers
                 Sittings = _context.Sitting.ToList(),
                 TimeSlots = _context.TimeSlot.ToList()
             };
+            model.Reservation.Status = reservation.Status;
             return View(model);
         }
 
@@ -273,7 +274,7 @@ namespace BeanSceneAppV1.Controllers
                 TimeSlotId = reservationVM.Reservation.TimeSlotId,
                 Sitting = reservationVM.Reservation.Sitting,
                 SittingId = reservationVM.Reservation.SittingId,
-                GuestAmmount = reservationVM.Reservation.GuestAmmount,
+                GuestAmount = reservationVM.Reservation.GuestAmount,
                 FirstName = reservationVM.Reservation.FirstName,
                 LastName = reservationVM.Reservation.LastName,
                 Phone = reservationVM.Reservation.Phone,
@@ -371,7 +372,7 @@ namespace BeanSceneAppV1.Controllers
             var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
 
             reservation.Status = Reservation.StatusEnum.Accepted;
-            sitting.Guest_Total += reservation.GuestAmmount;
+            sitting.Guest_Total += reservation.GuestAmount;
             _context.Reservation.Update(reservation);
             _context.Sitting.Update(sitting);
 
@@ -403,10 +404,10 @@ namespace BeanSceneAppV1.Controllers
             var sitting = await _context.Sitting.FindAsync(reservation.SittingId);
             var tableReservations = _context.TableReservation.Where(t => t.ReservationId == id).ToList();
             reservation.Status = Reservation.StatusEnum.Completed;
-            sitting.Guest_Total -= reservation.GuestAmmount;
+            sitting.Guest_Total -= reservation.GuestAmount;
 
-            sitting.Tables_Available += reservation.GuestAmmount / 4;
-            if (reservation.GuestAmmount % 4 >= 1)
+            sitting.Tables_Available += reservation.GuestAmount / 4;
+            if (reservation.GuestAmount % 4 >= 1)
             {
                 sitting.Tables_Available++;
             }

@@ -17,23 +17,23 @@
     //}
     async Task navitems()
     {
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-    @* <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>*@
+        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        @* <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>*@
 
         if (User.IsInRole("Manager"))
         {
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Table" asp-action="Index">Tables</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Area" asp-action="Index">Areas</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Sitting" asp-action="Index">Sittings</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="AreaAvailability" asp-action="Index">Area Availability</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="TableAvailability" asp-action="Index">Table Availability</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Table" asp-action="Index">Tables</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Area" asp-action="Index">Areas</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Sitting" asp-action="Index">Sittings</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="AreaAvailability" asp-action="Index">Area Availability</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="TableAvailability" asp-action="Index">Table Availability</a></li>
         }
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Index">Reservations</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Index">Reservations</a></li>
         if (User.IsInRole("Manager") || User.IsInRole("Staff"))
         {
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="ReservationStatus">Manage Reservations</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="TableReservation" asp-action="Index">Assign Tables</a></li>
-    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="CompletedReservations">Complete Reservations</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="ReservationStatus">Manage Reservations</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="TableReservation" asp-action="Index">Assign Tables</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="CompletedReservations">Complete Reservations</a></li>
         }
     }
 }
@@ -71,11 +71,11 @@
             @RenderBody()
 
         </main>
-                
+
 
     </div>
     <div>
-    @*https://codepen.io/goodkatz/pen/LYPGxQz css waves *@
+        @*https://codepen.io/goodkatz/pen/LYPGxQz css waves *@
         <!--Waves Container-->
      <div style="margin-bottom:1%; margin-left:-300px;" >
 <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -97,7 +97,7 @@ viewBox="28 24 220 28" preserveAspectRatio="none" shape-rendering="optimizeSpeed
 </div>
 <!--Waves end-->
     <footer class="border-top footer text-muted">
-   
+
     </div>
         <div class="container">
             &copy; 2022 - BeanScene - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -111,12 +111,12 @@ viewBox="28 24 220 28" preserveAspectRatio="none" shape-rendering="optimizeSpeed
 </body>
 <style>
 
-  @*https://codepen.io/goodkatz/pen/LYPGxQz css waves *@
+    @*https://codepen.io/goodkatz/pen/LYPGxQz css waves *@
 .waves {
   position:relative;
   margin-left:0px;
   width: 100%;
-  
+
   height:15vh;
   margin-bottom:-7px; /*Fix for safari gap*/
   min-height:100px;
@@ -124,7 +124,7 @@ viewBox="28 24 220 28" preserveAspectRatio="none" shape-rendering="optimizeSpeed
 }
 
 //.content {
-    
+
 //  position:relative;
 //  height:20vh;
 //  text-align:center;

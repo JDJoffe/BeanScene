@@ -9,6 +9,7 @@ namespace BeanSceneAppV1.Models
         public int Id { get; set; }
         [Required]
         [DisplayName("Area Name")]
+        [MaxLength(255)]
         public string Name { get; set; }
     }
 }

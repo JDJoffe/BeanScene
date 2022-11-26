@@ -80,7 +80,7 @@ GO
 
 
 SET DATEFORMAT DMY
-INSERT INTO Reservation ([Date], TimeSlotId,SittingId, GuestAmmount, FirstName, LastName, Phone, Email, SeatingRequest, [Status] ) VALUES
+INSERT INTO Reservation ([Date], TimeSlotId,SittingId, GuestAmount, FirstName, LastName, Phone, Email, SeatingRequest, [Status] ) VALUES
 ('2022-11-24',9,1,6,'Allen','Bates','04100','Allen@Gmail.com','Main By the window',4),
 ('2022-11-24',12,3,12,'Joe','Taylor','04100','Joe@Gmail.com','Balcony',4),
 ('2022-11-24',12,3,4,'Gary','Faulkner','04100','GaryFaulkner1@Gmail.com','Outside',4)

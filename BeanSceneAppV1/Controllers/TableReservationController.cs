@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using BeanSceneAppV1.ViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Configuration;
+using System.Collections.Immutable;
 
 namespace BeanSceneAppV1.Controllers
 {
@@ -53,15 +55,45 @@ namespace BeanSceneAppV1.Controllers
             List<TableAvailability> unavailableTables = new List<TableAvailability>();
             unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
 
+            int tablesNeeded = 0;
+            if (reservation.GuestAmount / 4 >= 1)
+            {
+                tablesNeeded = reservation.GuestAmount / 4;
+                if (reservation.GuestAmount % 4 >= 1)
+                {
+                    tablesNeeded++;
+                }
+            }
             // get list of all tables
-            List<Models.Table> availableTables = new List<Models.Table>();
-            availableTables = _context.Table.ToList();
+            List<Models.Table>[] availableTables = new List<Models.Table>[tablesNeeded];
+            //2
+            // available table list 2
+            /*
+             * List 1
+             * m1
+             * m2
+             * m3
+             * list 2
+             * m1
+             * m2
+             * m3
+             */
+            for (int i = 0; i < tablesNeeded; i++)
+            {
+                availableTables[i] = _context.Table.ToList();
+            }
 
             // remove unavailable tables from list of all tables.
-            foreach (var item in unavailableTables)
+            for (int i = 0; i < tablesNeeded; i++)
             {
-                availableTables.Remove(item.Table);
+
+                for (int j = 0; j < unavailableTables.Count; j++)
+                {
+                    availableTables[i].Remove(unavailableTables[j].Table);
+                }
             }
+
+
             // set data to new model
             var model = new TableReservationViewModel()
             {
@@ -72,6 +104,21 @@ namespace BeanSceneAppV1.Controllers
             model.TableReservation.ReservationId = (int)id;
             model.TableReservation.Reservation = reservation;
             model.TableReservation.Reservation.TimeSlot = timeslot;
+            model.TablesNeeded = tablesNeeded;
+            /*
+             * 8 people
+             * 8/4 = 2 > 1
+             * needed = 8 / 4 = 2
+             * 8 % 4 >= 1
+             * 
+             */
+
+
+            //sitting.Tables_Available += reservation.GuestAmount / 4;
+            //if (reservation.GuestAmount % 4 >= 1)
+            //{
+            //    sitting.Tables_Available++;
+            //}
             // pass model
             return View(model);
 
@@ -80,39 +127,47 @@ namespace BeanSceneAppV1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignTables(TableReservationViewModel tableReservationVM)
         {
+            Reservation reservation = await _context.Reservation.FindAsync(tableReservationVM.TableReservation.ReservationId);
+            for (int i = 0; i < tableReservationVM.TablesNeeded; i++)
+            {
+                var tableReservation = new Models.TableReservation
+                {
+                    Id = tableReservationVM.TableReservation.Id,
+                    ReservationId = tableReservationVM.TableReservation.ReservationId
 
-            var tableReservation = new Models.TableReservation
-            {
-                Id = tableReservationVM.TableReservation.Id,
-                ReservationId = tableReservationVM.TableReservation.ReservationId,
-                TableId = tableReservationVM.TableReservation.TableId
-            };
-            var tableAvailability = new Models.TableAvailability
-            {
-                Date = tableReservationVM.TableReservation.Reservation.Date,
-                TimeSlotId = tableReservationVM.TableReservation.Reservation.TimeSlotId,
-                TableId = tableReservationVM.TableReservation.TableId
-            };
-            //if (ModelState.IsValid)
-            //{
-            Reservation reservation = await _context.Reservation.FindAsync(tableReservation.ReservationId);
+                };
+                tableReservation.Table = (Models.Table)tableReservationVM.Tables[i];
+                tableReservation.TableId = tableReservation.Table.Id;
+                var tableAvailability = new Models.TableAvailability
+                {
+                    Date = tableReservationVM.TableReservation.Reservation.Date,
+                    TimeSlotId = tableReservationVM.TableReservation.Reservation.TimeSlotId,
+                    TableId = tableReservation.TableId
+                };
+                //if (ModelState.IsValid)
+                //{
+                tableReservationVM.Tables[i] = _context.Table.ToList();
+                _context.Add(tableAvailability);
+                _context.Add(tableReservation);
+                if (reservation.Status != Reservation.StatusEnum.Seated)
+                {
+                    reservation.Status = Reservation.StatusEnum.Seated;
+                }
+            }
+             
             //Reservation reservation = reservationQuery.First();
             Sitting sitting = await _context.Sitting.FindAsync(reservation.SittingId);
-            
-            if (reservation.Status != Reservation.StatusEnum.Seated)
-            {
-                reservation.Status = Reservation.StatusEnum.Seated;
-            }
 
-            sitting.Tables_Available--;
+
+
+            sitting.Tables_Available = sitting.Tables_Available - tableReservationVM.TablesNeeded;
             try
             {
 
-                tableReservationVM.Tables = _context.Table.ToList();
+                
                 _context.Update(sitting);
                 _context.Update(reservation);
-                _context.Add(tableAvailability);
-                _context.Add(tableReservation);
+               
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -121,11 +176,13 @@ namespace BeanSceneAppV1.Controllers
 
                 throw;
             }
+            // }
+
             //}     
             //return View(tableReservation);
         }
 
-      
+
 
         private bool TableAvailabilityReservationExists(int id)
         {

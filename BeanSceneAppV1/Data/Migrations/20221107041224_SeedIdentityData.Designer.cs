@@ -165,7 +165,7 @@ namespace BeanSceneAppV1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GuestAmmount")
+                    b.Property<int>("GuestAmount")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")

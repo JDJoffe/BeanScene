@@ -3,7 +3,19 @@
 
 @{
     ViewData["Title"] = "AssignTables";
-    
+    async Task TablesNeeded(int tablesNeeded)
+    {
+        for (int i = 0; i < tablesNeeded; i++)
+        {
+            <div class="form-group">
+                <label asp-for="TableReservation.Table" class="control-label"></label>
+                @*bruh*@
+                @Html.DropDownListFor(model => model.TableReservation.Table, new SelectList(Model.Tables, "Id", "Table_Name"),new {@class="form-control form-select"})
+               
+               
+            </div>
+        }
+    }
 }
 
 <h1>Assign</h1>
@@ -15,17 +27,17 @@
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.Date) </dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.TimeSlot.Time) </dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.TimeSlot.Time)</dd>
-@*    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Table.Table_Name) </dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Table.Table_Name)</dd> *@  
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.GuestAmmount) </dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.GuestAmmount)</dd>
+    @*    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Table.Table_Name) </dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Table.Table_Name)</dd> *@
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.GuestAmount) </dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.GuestAmount)</dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.FirstName)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.FirstName) </dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.LastName)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.LastName) </dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.Email)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.Reservation.Email) </dd>
-   @* <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.ReservationId)</dt>
+    @* <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.ReservationId)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.TableReservation.ReservationId) </dd>*@
     <div class="col-md-4">
         <form asp-action="AssignTables">
@@ -35,17 +47,12 @@
             <select asp-for="TableReservation.Reservation.Id" class="form-control" asp-items="ViewBag.TableReservation.Reservation.Id"></select>
             </div>*@
 
+           @TablesNeeded(Model.TablesNeeded)
+            @* passed values from controller go here as they do not transfer on submit otherwise.*@
+            <input asp-for="TableReservation.ReservationId" hidden value="@Model.TableReservation.ReservationId" class="form-control" />
+            <input asp-for="TableReservation.Reservation.Date" type="datetime" hidden value="@Model.TableReservation.Reservation.Date" class="form-control" />
+            <input asp-for="TableReservation.Reservation.TimeSlotId" hidden value="@Model.TableReservation.Reservation.TimeSlotId" class="form-control" />
             <div class="form-group">
-                <label asp-for="TableReservation.TableId" class="control-label"></label>
-                @*bruh*@
-                @Html.DropDownListFor(model => model.TableReservation.TableId, new SelectList(Model.Tables, "Id", "Table_Name"),
-                new {@class="form-control form-select"})
-               @* passed values from controller go here as they do not transfer on submit otherwise.*@
-                <input asp-for="TableReservation.ReservationId" hidden value="@Model.TableReservation.ReservationId" class="form-control" />
-                <input asp-for="TableReservation.Reservation.Date" type="datetime" hidden value="@Model.TableReservation.Reservation.Date"  class="form-control" />
-                <input asp-for="TableReservation.Reservation.TimeSlotId" hidden value="@Model.TableReservation.Reservation.TimeSlotId" class="form-control" />
-            </div>
-            <div class="form-group">             
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
 

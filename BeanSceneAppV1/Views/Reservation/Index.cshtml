@@ -20,10 +20,10 @@
                 @Html.DisplayNameFor(model => model.TimeSlot)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sitting)
+                @Html.DisplayNameFor(model => model.Sitting.Sitting_Type)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GuestAmmount)
+                @Html.DisplayNameFor(model => model.GuestAmount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
@@ -56,10 +56,10 @@
                 @Html.DisplayFor(modelItem => item.TimeSlot.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sitting.Id)
+                @Html.DisplayFor(modelItem => item.Sitting.Sitting_Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GuestAmmount)
+                @Html.DisplayFor(modelItem => item.GuestAmount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)

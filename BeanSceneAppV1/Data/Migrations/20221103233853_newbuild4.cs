@@ -254,7 +254,7 @@ namespace BeanSceneAppV1.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeSlotId = table.Column<int>(type: "int", nullable: false),
                     SittingId = table.Column<int>(type: "int", nullable: false),
-                    GuestAmmount = table.Column<int>(type: "int", nullable: false),
+                    GuestAmount = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
