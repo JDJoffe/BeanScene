@@ -7,7 +7,7 @@ namespace BeanSceneAppV1.ViewModels
     {
         public TableReservation TableReservation { get; set; }
         public IEnumerable<Table>[] Tables { get; set; }
-      
+        public int[]? TableIds { get; set; }
         public int TablesNeeded { get; set; }
     }
 }

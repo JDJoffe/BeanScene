@@ -80,7 +80,10 @@ namespace BeanSceneAppV1.Controllers
              */
             for (int i = 0; i < tablesNeeded; i++)
             {
-                availableTables[i] = _context.Table.ToList();
+                
+                    availableTables[i] = _context.Table.ToList();
+                
+
             }
 
             // remove unavailable tables from list of all tables.
@@ -131,25 +134,27 @@ namespace BeanSceneAppV1.Controllers
             //for each table needed, create a table reservation and a table availability
             for (int i = 0; i < tableReservationVM.TablesNeeded; i++)
             {
+                // var TableQuery = await _context.Table.FirstAsync(tableReservationVM.Tables[i]);
+                //tableReservationVM.Tables[i].
                 var tableReservation = new Models.TableReservation
                 {
                     // id whack maybe test it
-                    Id = tableReservationVM.TableReservation.Id + i - 1,
+                    //Id = tableReservationVM.TableReservation.Id + i - 1,
                     ReservationId = tableReservationVM.TableReservation.ReservationId
 
                 };
-                tableReservation.Table = (Models.Table)tableReservationVM.Tables[i];
-                tableReservation.TableId = tableReservation.Table.Id;
+                
+                tableReservation.TableId = tableReservationVM.TableIds[i];
                 var tableAvailability = new Models.TableAvailability
                 {
-                   // id whack
+                    // id whack
                     Date = tableReservationVM.TableReservation.Reservation.Date,
                     TimeSlotId = tableReservationVM.TableReservation.Reservation.TimeSlotId,
-                    TableId = tableReservation.TableId
-                };
+                    TableId = tableReservationVM.TableIds[i]
+            };
                 //if (ModelState.IsValid)
                 //{
-                tableReservationVM.Tables[i] = _context.Table.ToList();
+                //tableReservationVM.Tables[i] = _context.Table.ToList();
                 _context.Add(tableAvailability);
                 _context.Add(tableReservation);
                 if (reservation.Status != Reservation.StatusEnum.Seated)
@@ -157,7 +162,7 @@ namespace BeanSceneAppV1.Controllers
                     reservation.Status = Reservation.StatusEnum.Seated;
                 }
             }
-             
+
             //Reservation reservation = reservationQuery.First();
             Sitting sitting = await _context.Sitting.FindAsync(reservation.SittingId);
 
@@ -167,10 +172,10 @@ namespace BeanSceneAppV1.Controllers
             try
             {
 
-                
+
                 _context.Update(sitting);
                 _context.Update(reservation);
-               
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
