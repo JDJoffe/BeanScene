@@ -128,11 +128,13 @@ namespace BeanSceneAppV1.Controllers
         public async Task<IActionResult> AssignTables(TableReservationViewModel tableReservationVM)
         {
             Reservation reservation = await _context.Reservation.FindAsync(tableReservationVM.TableReservation.ReservationId);
+            //for each table needed, create a table reservation and a table availability
             for (int i = 0; i < tableReservationVM.TablesNeeded; i++)
             {
                 var tableReservation = new Models.TableReservation
                 {
-                    Id = tableReservationVM.TableReservation.Id,
+                    // id whack maybe test it
+                    Id = tableReservationVM.TableReservation.Id + i - 1,
                     ReservationId = tableReservationVM.TableReservation.ReservationId
 
                 };
@@ -140,6 +142,7 @@ namespace BeanSceneAppV1.Controllers
                 tableReservation.TableId = tableReservation.Table.Id;
                 var tableAvailability = new Models.TableAvailability
                 {
+                   // id whack
                     Date = tableReservationVM.TableReservation.Reservation.Date,
                     TimeSlotId = tableReservationVM.TableReservation.Reservation.TimeSlotId,
                     TableId = tableReservation.TableId

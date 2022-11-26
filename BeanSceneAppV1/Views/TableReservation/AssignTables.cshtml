@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label asp-for="TableReservation.Table" class="control-label"></label>
                 @*bruh*@
-                @Html.DropDownListFor(model => model.TableReservation.Table, new SelectList(Model.Tables, "Id", "Table_Name"),new {@class="form-control form-select"})
+                @Html.DropDownListFor(model => model.TableReservation.Table, new SelectList(Model.Tables[i], "Id", "Table_Name"),new {@class="form-control form-select"})
                
                
             </div>
