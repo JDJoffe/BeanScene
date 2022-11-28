@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //DefaultConnection
 //Azure
-var connectionString = builder.Configuration.GetConnectionString("Azure");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 //var connectionString = builder.Configuration.GetConnectionString("BeanSceneAppV1");

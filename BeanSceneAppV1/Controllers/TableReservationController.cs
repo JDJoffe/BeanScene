@@ -79,24 +79,17 @@ namespace BeanSceneAppV1.Controllers
              * m3
              */
             for (int i = 0; i < tablesNeeded; i++)
-            {
-                
-                    availableTables[i] = _context.Table.ToList();
-                
-
+            {                
+                    availableTables[i] = _context.Table.ToList();               
             }
-
             // remove unavailable tables from list of all tables.
             for (int i = 0; i < tablesNeeded; i++)
             {
-
                 for (int j = 0; j < unavailableTables.Count; j++)
                 {
                     availableTables[i].Remove(unavailableTables[j].Table);
                 }
             }
-
-
             // set data to new model
             var model = new TableReservationViewModel()
             {
@@ -115,14 +108,6 @@ namespace BeanSceneAppV1.Controllers
              * 8 % 4 >= 1
              * 
              */
-
-
-            //sitting.Tables_Available += reservation.GuestAmount / 4;
-            //if (reservation.GuestAmount % 4 >= 1)
-            //{
-            //    sitting.Tables_Available++;
-            //}
-            // pass model
             return View(model);
 
         }

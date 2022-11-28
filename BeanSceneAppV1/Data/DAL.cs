@@ -32,6 +32,8 @@ namespace BeanSceneAppV1.Data
         
         // default constructor
         // reading the connection string from the App.Config
+        //DefaultConnection
+        //Azure
         public SQLDAL() { _connection = WebApplication.CreateBuilder().Configuration.GetConnectionString("DefaultConnection"); }
         // parameterised constructor 
 
