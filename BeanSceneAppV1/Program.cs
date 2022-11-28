@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//DefaultConnection
+//Azure
+var connectionString = builder.Configuration.GetConnectionString("Azure");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 //var connectionString = builder.Configuration.GetConnectionString("BeanSceneAppV1");

@@ -31,9 +31,13 @@ namespace BeanSceneAppV1.Controllers
         }
         [AllowAnonymous]
 
+        #region Base
+
+        #region Index
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
+
             // automatically when viewed find old unnatended requested reservations and reject them as they are no longer relevant
             List<Reservation> oldReservations = new List<Reservation>();
             oldReservations = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date < DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time < DateTime.UtcNow.TimeOfDay)).ToList();
@@ -80,34 +84,12 @@ namespace BeanSceneAppV1.Controllers
 
             return View(await applicationDbContext.ToListAsync());
         }
-        [Authorize(Roles = "Manager, Staff, Member")]
 
-        // GET: Reservation
-        public async Task<IActionResult> IndexMember()
-        {
-            // get reservations made by this member
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+       
 
-            var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
-            return View(await applicationDbContext.ToListAsync());
-        }
+        #endregion
 
-        [Authorize(Roles = "Manager, Staff")]
-        // GET: Reservation
-        public async Task<IActionResult> ReservationStatus()
-        {
-            // get reservations that are current or upcomming and have the requested status.
-            // ApplicationUser user = await _userManager.GetUserAsync(User);
-            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay)).Include(r => r.Sitting).Include(r => r.TimeSlot);
-            return View(await applicationDbContext.ToListAsync());
-        }
-        [Authorize(Roles = "Manager, Staff")]
-        public async Task<IActionResult> CompletedReservations()
-        {
-            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Seated).Include(r => r.Sitting).Include(r => r.TimeSlot);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
+        #region Details
         [Authorize(Roles = "Manager, Staff, Member")]
         // GET: Reservation/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -128,6 +110,137 @@ namespace BeanSceneAppV1.Controllers
 
             return View(reservation);
         }
+        #endregion
+
+        #region Edit
+        // GET: Reservation/Edit/5
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Reservation == null)
+            {
+                return NotFound();
+            }
+
+            var reservation = await _context.Reservation.FindAsync(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            var model = new ReservationViewModel()
+            {
+                Reservation = reservation,
+                Sittings = _context.Sitting.ToList(),
+                TimeSlots = _context.TimeSlot.ToList()
+            };
+            model.Reservation.Status = reservation.Status;
+            return View(model);
+        }
+
+        // POST: Reservation/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> Edit(ReservationViewModel reservationVM)
+        {
+            var reservation = new Models.Reservation
+            {
+                Id = reservationVM.Reservation.Id,
+                Date = reservationVM.Reservation.Date,
+                TimeSlot = reservationVM.Reservation.TimeSlot,
+                TimeSlotId = reservationVM.Reservation.TimeSlotId,
+                Sitting = reservationVM.Reservation.Sitting,
+                SittingId = reservationVM.Reservation.SittingId,
+                GuestAmount = reservationVM.Reservation.GuestAmount,
+                FirstName = reservationVM.Reservation.FirstName,
+                LastName = reservationVM.Reservation.LastName,
+                Phone = reservationVM.Reservation.Phone,
+                Email = reservationVM.Reservation.Email,
+                SeatingRequest = reservationVM.Reservation.SeatingRequest,
+                Status = reservationVM.Reservation.Status
+            };
+            reservationVM.Sittings = _context.Sitting.ToList();
+            reservationVM.TimeSlots = _context.TimeSlot.ToList();
+
+            //if (id != reservation.Id)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        _context.Update(reservation);
+            //        await _context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!ReservationExists(reservation.Id))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            _context.Update(reservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id", reservation.SittingId);
+            //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", reservation.TimeSlotId);
+            //return View(reservation);
+        }
+        #endregion
+
+        #region Delete
+        // GET: Reservation/Delete/5
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Reservation == null)
+            {
+                return NotFound();
+            }
+
+            var reservation = await _context.Reservation
+                .Include(r => r.Sitting)
+                .Include(r => r.TimeSlot)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            return View(reservation);
+        }
+
+        // POST: Reservation/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Reservation == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Reservation'  is null.");
+            }
+            var reservation = await _context.Reservation.FindAsync(id);
+            if (reservation != null)
+            {
+                _context.Reservation.Remove(reservation);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+        #region Create
 
         [AllowAnonymous]
         // GET: Reservation/Create
@@ -233,137 +346,49 @@ namespace BeanSceneAppV1.Controllers
             //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", reservation.TimeSlotId);
             return View(reservation);
         }
-
-        // GET: Reservation/Edit/5
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Reservation == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _context.Reservation.FindAsync(id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-            var model = new ReservationViewModel()
-            {
-                Reservation = reservation,
-                Sittings = _context.Sitting.ToList(),
-                TimeSlots = _context.TimeSlot.ToList()
-            };
-            model.Reservation.Status = reservation.Status;
-            return View(model);
-        }
-
-        // POST: Reservation/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Edit(ReservationViewModel reservationVM)
-        {
-            var reservation = new Models.Reservation
-            {
-                Id = reservationVM.Reservation.Id,
-                Date = reservationVM.Reservation.Date,
-                TimeSlot = reservationVM.Reservation.TimeSlot,
-                TimeSlotId = reservationVM.Reservation.TimeSlotId,
-                Sitting = reservationVM.Reservation.Sitting,
-                SittingId = reservationVM.Reservation.SittingId,
-                GuestAmount = reservationVM.Reservation.GuestAmount,
-                FirstName = reservationVM.Reservation.FirstName,
-                LastName = reservationVM.Reservation.LastName,
-                Phone = reservationVM.Reservation.Phone,
-                Email = reservationVM.Reservation.Email,
-                SeatingRequest = reservationVM.Reservation.SeatingRequest,
-                Status = reservationVM.Reservation.Status
-            };
-            reservationVM.Sittings = _context.Sitting.ToList();
-            reservationVM.TimeSlots = _context.TimeSlot.ToList();
-
-            //if (id != reservation.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(reservation);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!ReservationExists(reservation.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            _context.Update(reservation);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id", reservation.SittingId);
-            //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", reservation.TimeSlotId);
-            //return View(reservation);
-        }
-
-        // GET: Reservation/Delete/5
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Reservation == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _context.Reservation
-                .Include(r => r.Sitting)
-                .Include(r => r.TimeSlot)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
-        }
-
-        // POST: Reservation/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Reservation == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Reservation'  is null.");
-            }
-            var reservation = await _context.Reservation.FindAsync(id);
-            if (reservation != null)
-            {
-                _context.Reservation.Remove(reservation);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        #endregion
 
         private bool ReservationExists(int id)
         {
             return _context.Reservation.Any(e => e.Id == id);
         }
+        #endregion
+
+        #region Specialised
 
 
+        #region View
+
+        [Authorize(Roles = "Manager, Staff, Member")]
+
+        // GET: Reservation
+        public async Task<IActionResult> IndexMember()
+        {
+            // get reservations made by this member
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+
+            var applicationDbContext = _context.Reservation.Where(r => r.Email == user.Email).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        [Authorize(Roles = "Manager, Staff")]
+        // GET: Reservation
+        public async Task<IActionResult> ReservationStatus()
+        {
+            // get reservations that are current or upcomming and have the requested status.
+            // ApplicationUser user = await _userManager.GetUserAsync(User);
+            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay)).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            return View(await applicationDbContext.ToListAsync());
+        }
+        [Authorize(Roles = "Manager, Staff")]
+        public async Task<IActionResult> CompletedReservations()
+        {
+            var applicationDbContext = _context.Reservation.Where(r => r.Status == Reservation.StatusEnum.Seated).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            return View(await applicationDbContext.ToListAsync());
+        } 
+        #endregion
+
+        #region Buttons
         [Authorize(Roles = "Manager, Staff")]
         public async Task<IActionResult> Accept(int? id)
         {
@@ -418,6 +443,22 @@ namespace BeanSceneAppV1.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(ReservationStatus));
         }
+        #endregion
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
