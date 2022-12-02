@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeanSceneAppV1", "BeanSceneAppV1\BeanSceneAppV1.csproj", "{2B99771B-F159-4375-B94A-A7ED7D036470}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeanSceneAppV1", "BeanSceneAppV1\BeanSceneAppV1.csproj", "{2B99771B-F159-4375-B94A-A7ED7D036470}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeanSceneUnitTest", "BeanSceneUnitTest\BeanSceneUnitTest.csproj", "{F06C948C-7555-43A6-9414-A7590BC25781}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2B99771B-F159-4375-B94A-A7ED7D036470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B99771B-F159-4375-B94A-A7ED7D036470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B99771B-F159-4375-B94A-A7ED7D036470}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F06C948C-7555-43A6-9414-A7590BC25781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F06C948C-7555-43A6-9414-A7590BC25781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F06C948C-7555-43A6-9414-A7590BC25781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F06C948C-7555-43A6-9414-A7590BC25781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -50,7 +50,6 @@ namespace BeanSceneAppV1.Controllers
             // get timeslot of reservation 
             var timeslotQuery = _context.TimeSlot.Where(t => t.Id == reservation.TimeSlotId);
             TimeSlot timeslot = timeslotQuery.First();
-
             // get unavailable tables from tableavailability
             List<TableAvailability> unavailableTables = new List<TableAvailability>();
             unavailableTables = _context.TableAvailability.Distinct().Where(ta => ta.Date == reservation.Date && ta.TimeSlotId == reservation.TimeSlotId).ToList();
@@ -66,6 +65,7 @@ namespace BeanSceneAppV1.Controllers
             }
             // get list of all tables
             List<Models.Table>[] availableTables = new List<Models.Table>[tablesNeeded];
+            #region notes
             //2
             // available table list 2
             /*
@@ -78,9 +78,10 @@ namespace BeanSceneAppV1.Controllers
              * m2
              * m3
              */
+            #endregion
             for (int i = 0; i < tablesNeeded; i++)
-            {                
-                    availableTables[i] = _context.Table.ToList();               
+            {
+                availableTables[i] = _context.Table.ToList();
             }
             // remove unavailable tables from list of all tables.
             for (int i = 0; i < tablesNeeded; i++)
@@ -92,8 +93,7 @@ namespace BeanSceneAppV1.Controllers
             }
             // set data to new model
             var model = new TableReservationViewModel()
-            {
-                // pass available tables to model
+            {               // pass available tables to model
                 Tables = availableTables
             };
             model.TableReservation = new TableReservation();
@@ -101,6 +101,7 @@ namespace BeanSceneAppV1.Controllers
             model.TableReservation.Reservation = reservation;
             model.TableReservation.Reservation.TimeSlot = timeslot;
             model.TablesNeeded = tablesNeeded;
+            #region notes
             /*
              * 8 people
              * 8/4 = 2 > 1
@@ -108,8 +109,8 @@ namespace BeanSceneAppV1.Controllers
              * 8 % 4 >= 1
              * 
              */
+            #endregion
             return View(model);
-
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -126,9 +127,7 @@ namespace BeanSceneAppV1.Controllers
                     // id whack maybe test it
                     //Id = tableReservationVM.TableReservation.Id + i - 1,
                     ReservationId = tableReservationVM.TableReservation.ReservationId
-
                 };
-                
                 tableReservation.TableId = tableReservationVM.TableIds[i];
                 var tableAvailability = new Models.TableAvailability
                 {
@@ -136,43 +135,27 @@ namespace BeanSceneAppV1.Controllers
                     Date = tableReservationVM.TableReservation.Reservation.Date,
                     TimeSlotId = tableReservationVM.TableReservation.Reservation.TimeSlotId,
                     TableId = tableReservationVM.TableIds[i]
-            };
-                //if (ModelState.IsValid)
-                //{
-                //tableReservationVM.Tables[i] = _context.Table.ToList();
+                };            
                 _context.Add(tableAvailability);
                 _context.Add(tableReservation);
                 if (reservation.Status != Reservation.StatusEnum.Seated)
                 {
                     reservation.Status = Reservation.StatusEnum.Seated;
                 }
-            }
-
-            //Reservation reservation = reservationQuery.First();
+            }          
             Sitting sitting = await _context.Sitting.FindAsync(reservation.SittingId);
-
-
-
             sitting.Tables_Available = sitting.Tables_Available - tableReservationVM.TablesNeeded;
             try
             {
-
-
                 _context.Update(sitting);
                 _context.Update(reservation);
-
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
             {
-
                 throw;
-            }
-            // }
-
-            //}     
-            //return View(tableReservation);
+            }       
         }
 
 

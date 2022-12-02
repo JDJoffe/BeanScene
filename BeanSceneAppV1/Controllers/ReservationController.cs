@@ -276,12 +276,15 @@ namespace BeanSceneAppV1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create(ReservationViewModel reservationVM)
         {
+            #region areaavail
             // this prob dont work
             //var AreaAvailability = _context.AreaAvailability.Where(a => a.Date == reservationVM.Reservation.Date && reservationVM.Reservation.TimeSlot.Time >= a.Start_Time && reservationVM.Reservation.TimeSlot.Time <= a.End_Time);
             //if (AreaAvailability.First() != null)
             //{
             //    return(View(reservationVM.Reservation));
-            //}
+            //} 
+            #endregion
+            //get sitting of reservation
             int sittingId = 0;
             SQLDAL _db;
             _db = new SQLDAL();
@@ -294,9 +297,7 @@ namespace BeanSceneAppV1.Controllers
             DataTable dt = _db.ExecuteSQL(sql, sqlparams, true);
             foreach (DataRow dr in dt.Rows)
             { sittingId = (int)dr.ItemArray.First(); }
-
-            //int.TryParse(sittingId, out int sittingIdnum);
-
+            // new reservation
             var reservation = new Models.Reservation
             {
                 Id = reservationVM.Reservation.Id,
@@ -312,14 +313,13 @@ namespace BeanSceneAppV1.Controllers
                 Email = reservationVM.Reservation.Email,
                 SeatingRequest = reservationVM.Reservation.SeatingRequest,
                 Status = Reservation.StatusEnum.Requested
-
             };
             reservationVM.Sittings = _context.Sitting.ToList();
             reservationVM.TimeSlots = _context.TimeSlot.ToList();
-            //if (ModelState.IsValid)
-            //{
+            //add
             _context.Add(reservation);
             await _context.SaveChangesAsync();
+            //change redirect depending on user.
             ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
@@ -340,10 +340,6 @@ namespace BeanSceneAppV1.Controllers
                 }
             }
             else { return RedirectToAction(nameof(Create)); }
-
-            //}
-            //ViewData["SittingId"] = new SelectList(_context.Sitting, "Id", "Id", reservation.SittingId);
-            //ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id", reservation.TimeSlotId);
             return View(reservation);
         }
         #endregion
@@ -377,7 +373,9 @@ namespace BeanSceneAppV1.Controllers
         {
             // get reservations that are current or upcomming and have the requested status.
             // ApplicationUser user = await _userManager.GetUserAsync(User);
-            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay)).Include(r => r.Sitting).Include(r => r.TimeSlot);
+            var applicationDbContext = _context.Reservation.Where(r => (r.Status == Reservation.StatusEnum.Requested && r.Date >= DateTime.Today) || 
+            (r.Status == Reservation.StatusEnum.Requested && r.Date == DateTime.Today && r.TimeSlot.Time >= DateTime.UtcNow.TimeOfDay))
+                .Include(r => r.Sitting).Include(r => r.TimeSlot);
             return View(await applicationDbContext.ToListAsync());
         }
         [Authorize(Roles = "Manager, Staff")]

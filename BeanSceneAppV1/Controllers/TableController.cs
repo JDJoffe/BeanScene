@@ -30,7 +30,6 @@ namespace BeanSceneAppV1.Controllers
             var applicationDbContext = _context.Table.Include(t => t.Area);
             return View(await applicationDbContext.ToListAsync());
         }
-
         // GET: Table/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -63,7 +62,6 @@ namespace BeanSceneAppV1.Controllers
             };
             return View(model);
         }
-
         // POST: Table/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -88,7 +86,6 @@ namespace BeanSceneAppV1.Controllers
             //}
             //return View(table);
         }
-
         // GET: Table/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -110,7 +107,6 @@ namespace BeanSceneAppV1.Controllers
             };
             return View(model);
         }
-
         // POST: Table/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -132,6 +128,7 @@ namespace BeanSceneAppV1.Controllers
             _context.Update(table);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            #region old
             //}
 
             //if (id != table.Table_Id)
@@ -159,7 +156,8 @@ namespace BeanSceneAppV1.Controllers
             //    }
             //    return RedirectToAction(nameof(Index));
             //}
-            //return View(table);
+            //return View(table); 
+            #endregion
         }
 
         // GET: Table/Delete/5
@@ -186,7 +184,6 @@ namespace BeanSceneAppV1.Controllers
             return View(model);
 
         }
-
         // POST: Table/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
