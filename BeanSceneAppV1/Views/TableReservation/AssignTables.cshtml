@@ -9,23 +9,27 @@
         {
             //for (int j = 0; j < Model.Tables.Length; j++)
             //{
-                 <div class="form-group">
-                <label asp-for="@Model.Tables[i]" class="control-label"></label>
-                @*bruh*@
-                @Html.DropDownListFor(model => model.TableIds[i], new SelectList(Model.Tables[i], "Id", "Table_Name"),new {@class="form-control form-select"})
-                
-                
-               
+            <div class="form-group">
+                <div class="row" style="margin-bottom:15px;">
+                    <div class="col-sm-4" style="margin-right:30px;">
+                        <dt style="color:aliceblue; font-weight:bold; width:100px; "> @Html.DisplayNameFor(model => model.TableReservation.Table.Table_Name)</dt>
+                    </div>
+                    @*bruh*@
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(model => model.TableIds[i], new SelectList(Model.Tables[i], "Id", "Table_Name"),new {@class="form-control form-select"})
+                    </div>
+                </div>
             </div>
-           // }
-           
+            // }
+
         }
+
     }
 }
 
-<h1>Assign</h1>
+<h1 style="width:200px">Assign Tables</h1>
 
-<h4>Table Reservations</h4>
+<h4 style="width:400px; font-weight:bold ;">Table Reservations</h4>
 <hr />
 <div class="row">
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.TableReservation.Reservation.Date)</dt>
@@ -52,7 +56,7 @@
             <select asp-for="TableReservation.Reservation.Id" class="form-control" asp-items="ViewBag.TableReservation.Reservation.Id"></select>
             </div>*@
 
-           @TablesNeeded(Model.TablesNeeded)
+            @TablesNeeded(Model.TablesNeeded)
             @* passed values from controller go here as they do not transfer on submit otherwise.*@
             <input asp-for="TablesNeeded" hidden value="@Model.TablesNeeded" class="form-control" />
             <input asp-for="TableReservation.ReservationId" hidden value="@Model.TableReservation.ReservationId" class="form-control" />
@@ -72,6 +76,6 @@
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial", Model);
     }
     }
