@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BeanSceneAppV1.Models.Area">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Area.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.AreaAvailability">
+    <Position X="2.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAQAAAAAAAAAAACAAAAAAAAAAABIAAAAQAAAAA=</HashCode>
+      <FileName>Models\AreaAvailability.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Area" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.Reservation">
+    <Position X="11.75" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="BeanSceneAppV1.Models.Reservation.StatusEnum">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Reservation.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACAEAEACAAAACAAABAAABAgAAAAAABAAAAIAAgAEg=</HashCode>
+      <FileName>Models\Reservation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sitting" />
+      <Property Name="TimeSlot" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.Sitting">
+    <Position X="5.25" Y="6.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="BeanSceneAppV1.Models.Sitting.SittingEnum">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Sitting.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACAAAQAAIAAAAAAAACIABCAAAAAABAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\Sitting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.Table">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAABAAAAAAAAAAAgAIAAAAQAAAAA=</HashCode>
+      <FileName>Models\Table.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.TableAvailability">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAABAQARAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TableAvailability.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Table" />
+      <Property Name="TimeSlot" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.TableReservation">
+    <Position X="11.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAABAAAAEAAAQAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TableReservation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Reservation" />
+      <Property Name="Table" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.Models.TimeSlot">
+    <Position X="8.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Models\TimeSlot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeanSceneAppV1.ViewModels.TableReservationViewModel">
+    <Position X="14.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAACAAAAAAAAAAAQAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>ViewModels\TableReservationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TableReservation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.ViewModels.TableViewModel" Collapsed="true">
+    <Position X="2.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TableViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Table" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Areas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.ViewModels.TableAvailabilityViewModel" Collapsed="true">
+    <Position X="4.5" Y="4.25" Width="2.25" />
+    <AssociationLine Name="TimeSlots" Type="BeanSceneAppV1.Models.TimeSlot" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="4.688" />
+        <Point X="7.5" Y="4.688" />
+        <Point X="7.5" Y="4.688" />
+        <Point X="8.25" Y="4.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TableAvailabilityViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TableAvailability" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="TimeSlots" />
+      <Property Name="Tables" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.ViewModels.ReservationViewModel" Collapsed="true">
+    <Position X="8.25" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAABAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ReservationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Reservation" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Sittings" />
+      <Property Name="TimeSlots" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BeanSceneAppV1.ViewModels.AreaAvailabilityViewModel" Collapsed="true">
+    <Position X="4.5" Y="5.25" Width="2.25" />
+    <AssociationLine Name="AreaAvailability" Type="BeanSceneAppV1.Models.AreaAvailability" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.938" Y="5.812" />
+        <Point X="4.938" Y="8.186" />
+        <Point X="3.75" Y="8.186" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAABAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\AreaAvailabilityViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AreaAvailability" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Areas" />
+      <Property Name="TimeSlots" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
