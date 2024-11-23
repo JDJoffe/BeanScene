@@ -5,17 +5,17 @@
 }
 
 <header>
-    <h1>@ViewData["Title"]</h1>
+    <h1 style="width:max-content; font-size:.4px; margin-top:3%;">@ViewData["Title"]</h1>
     @{
         if (User.Identity.IsAuthenticated)
         {
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark" style="width:800px;">Click here to Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-dark" style="width:max-content;">Click here to Logout</button>
             </form>
         }
         else
         {
-            <p style ="width:800px;">You have successfully logged out of the application.</p>
+            <p style="width:max-content;">You have successfully logged out of the application.</p>
         }
     }
 </header>
