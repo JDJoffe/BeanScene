@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BeanSceneAppV1.Models.Area>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Areas";
 }
 
-<h1 style="width:max-content; font-size:.4px; margin-top:3%;">Area</h1>
+<h1 style="width:max-content; font-size:.4px; margin-top:3%;">@ViewData["Title"]</h1>
 <a type="button" class="btn btn-primary btn-sm" href="@Url.Action("Create")">
     <span class="glyphicon glyphicon-plus"></span>
     <span>New</span>
