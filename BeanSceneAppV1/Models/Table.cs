@@ -14,7 +14,7 @@ namespace BeanSceneAppV1.Models
         public string Table_Name { get; set; }
         [Required]
         [DisplayName("Table Seats")]
-        [MaxLength(255)]
+        //[MaxLength(255)]
         public int Table_Seats { get; set; }
         [Required]
         public int AreaId { get; set; }
